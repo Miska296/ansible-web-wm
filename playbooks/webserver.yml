@@ -1,3 +1,4 @@
+---
 - name: Configure web server and security
   hosts: web
   become: true
