@@ -61,6 +61,11 @@
     msg: "Web server did not return expected content!"
   when: "'Hello from GitHub!' not in http_response.content"
 
+- name: Remove existing static-sites folder before cloning
+  file:
+    path: /opt/static-sites
+    state: absent
+
 - name: Clone static site from GitHub
   git:
     repo: 'https://github.com/Miska296/static-web-test.git'
