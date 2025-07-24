@@ -67,12 +67,15 @@ Webová aplikace dostupná na portu 80
 Uživatel webapp vytvořen pomocí hesla z Vaultu
 
 ## Stav projektu
-Správa uživatelů        Ano
-Zabezpečení systému     Ano
-Aktualizace systému     Ano
-Webserver               Ano
-Vault (heslo)           Ano
-Provisioning            Ano, bez chyby
+- **Správa uživatelů**        Ano
+- **Zabezpečení systému**     Ano
+- **Aktualizace systému**     Ano
+- **Webserver**               Ano
+- **Vault (heslo)**           Ano
+- **Provisioning**            Ano, bez chyby
+
+## Související projekt
+Tento projekt vychází z [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), který slouží pro testování a učení práce se statickými weby.
 
 ## Autor
 Projekt vypracovala Michaela Kučerová
