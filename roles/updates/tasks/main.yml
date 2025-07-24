@@ -19,12 +19,7 @@
     name: fail2ban
     state: present
 
-- name: Gather service facts
-  service_facts:
-
-- name: Start fail2ban only if not active
+- name: Enable fail2ban service
   service:
     name: fail2ban
-    state: started
     enabled: true
-  when: ansible_facts.services['fail2ban'].state != "running"
