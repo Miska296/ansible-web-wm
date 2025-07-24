@@ -1,0 +1,8 @@
+---
+- name: Test users role
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: true
+  roles:
+    - users
