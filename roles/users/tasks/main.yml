@@ -1,5 +1,6 @@
-- name: Create dedicated user webapp
+- name: Create dedicated user webapp with password from Vault
   user:
     name: webapp
+    password: "{{ webapp_password | password_hash('sha512') }}"
     shell: /bin/bash
     state: present
