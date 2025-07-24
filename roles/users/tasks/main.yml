@@ -1,0 +1,5 @@
+- name: Create dedicated user webapp
+  user:
+    name: webapp
+    shell: /bin/bash
+    state: present

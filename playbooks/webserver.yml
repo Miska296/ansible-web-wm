@@ -1,0 +1,9 @@
+- name: Configure web server and security
+  hosts: web
+  become: true
+  roles:
+    - users
+    - webserver
+    - firewall
+    - ssh
+    - updates
