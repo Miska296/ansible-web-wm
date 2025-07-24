@@ -19,8 +19,16 @@
     name: fail2ban
     state: present
 
-- name: Ensure fail2ban is enabled and active
-  ansible.builtin.systemd:
+- name: Check if fail2ban is active
+  shell: service fail2ban status | grep "active (running)"
+  register: fail2ban_status
+  changed_when: false
+  ignore_errors: true
+
+- name: Start fail2ban only if not active
+  service:
     name: fail2ban
-    enabled: true
     state: started
+    enabled: true
+  when: fail2ban_status.rc != 0
+
