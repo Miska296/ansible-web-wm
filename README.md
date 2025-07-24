@@ -33,6 +33,25 @@ Alternativně:
 ansible-playbook -i inventory/hosts.ini playbooks/webserver.yml --ask-vault-pass
 Heslo k Vaultu zadej při výzvě (tajemstvi123).
 
+## Jak spustit projekt
+1. Naklonuj repozitář:
+   ```bash
+   git clone https://github.com/Miska296/ansible-web-wm.git
+   cd ansible-web-wm
+2. Spusť Ansible playbook:
+   ```bash
+   ansible-playbook -i inventory.ini playbook.yml
+3. Ověř funkčnost webserveru:
+- Otevři http://localhost nebo IP adresu serveru v prohlížeči
+
+---
+## Požadavky na prostředí
+- Python 3.8+
+- Ansible 2.10+
+- Linux server nebo VM s SSH přístupem
+- Vault heslo pro šifrované proměnné
+- Správně nastavený `inventory.ini` soubor
+
 ## Ansible Vault — Bezpečné uchování hesla
 Citlivé heslo je zašifrováno pomocí ansible-vault:
 ansible-vault encrypt group_vars/web/vault
@@ -67,12 +86,12 @@ Webová aplikace dostupná na portu 80
 Uživatel webapp vytvořen pomocí hesla z Vaultu
 
 ## Stav projektu
-- **Správa uživatelů**        Ano
-- **Zabezpečení systému**     Ano
-- **Aktualizace systému**     Ano
-- **Webserver**               Ano
-- **Vault (heslo)**           Ano
-- **Provisioning**            Ano, bez chyby
+- **Správa uživatelů** - Ano
+- **Zabezpečení systému** - Ano
+- **Aktualizace systému** - Ano
+- **Webserver** - Ano
+- **Vault (heslo)** - Ano
+- **Provisioning** - Ano, bez chyby
 
 ## Související projekt
 Tento projekt vychází z [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), který slouží pro testování a učení práce se statickými weby.
