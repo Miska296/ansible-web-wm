@@ -1,6 +1,8 @@
 ---
 - name: Configure web server and security
   hosts: web
+  vars_files:
+    - ../group_vars/web/vault
   become: true
   roles:
     - users
