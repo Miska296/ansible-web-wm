@@ -1,6 +1,6 @@
-- name: Create user webappi
+- name: Create user webapp
   user:
-    name: webappi
+    name: webapp
     shell: /bin/bash
     state: present
 
