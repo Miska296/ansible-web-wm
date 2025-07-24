@@ -19,8 +19,8 @@
     name: fail2ban
     state: present
 
-- name: Ensure fail2ban is running
-  service:
+- name: Ensure fail2ban is enabled and active
+  ansible.builtin.systemd:
     name: fail2ban
-    state: started
     enabled: true
+    state: started
