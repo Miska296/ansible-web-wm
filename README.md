@@ -3,15 +3,15 @@ Ansible projekt pro nasazení webového serveru
 
 ## Ansible Web Server — Projekt `ansible-web-wm`
 Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
-- bezpečnostní konfiguraci (firewall, fail2ban, ssh)
+- bezpečnostní konfiguraci (`firewall`, `fail2ban`, `ssh`)
 - automatické aktualizace systému
 - vytvoření dedikovaného uživatele `webapp`
-- nasazení jednoduchého webserveru
+- nasazení jednoduchého `webserveru`
 - použití `ansible-vault` pro šifrování citlivých údajů
 
 ---
 ## Struktura projektu
-kořenová složka ansible-web-wm
+kořenová složka `ansible-web-wm`:
 - inventory/hosts.ini
 - playbooks/webserver.yml
 - roles/users
@@ -19,30 +19,47 @@ kořenová složka ansible-web-wm
 - roles/firewall
 - roles/ssh
 - roles/updates
-- group_vars/web/vault (zašifrovaný soubor s heslem)
+- group_vars/web/vault  # zašifrovaný soubor s heslem
 
 ---
-## Spuštění
-Před prvním spuštěním nastav cestu k rolím (v `provision.sh` už připraveno):
-```bash
-export ANSIBLE_ROLES_PATH="./roles"
-```
-Spusť provisioning:
-./provision.sh
-Alternativně:
-ansible-playbook -i inventory/hosts.ini playbooks/webserver.yml --ask-vault-pass
-Heslo k Vaultu zadej při výzvě (tajemstvi123).
-
-## Jak spustit projekt
+## Spuštění projektu
 1. Naklonuj repozitář:
    ```bash
    git clone https://github.com/Miska296/ansible-web-wm.git
    cd ansible-web-wm
-2. Spusť Ansible playbook:
+2. Nastav cestu k rolím (v `provision.sh` už připraveno):
    ```bash
-   ansible-playbook -i inventory.ini playbook.yml
-3. Ověř funkčnost webserveru:
-- Otevři http://localhost nebo IP adresu serveru v prohlížeči
+   export ANSIBLE_ROLES_PATH="./roles"
+3. Spusť provisioning:
+   ```bash
+   ./provision.sh
+Alternativně můžeš použít přímo Ansible playbook:
+   ```bash
+   ansible-playbook -i inventory/hosts.ini playbooks/webserver.yml --ask-vault-pass
+   ```
+4. Zadej heslo k Vaultu při výzvě:
+   ```text
+   tajemstvi123  # Ukázkové heslo
+5. Ověř funkčnost webserveru:
+- Otevři `http://localhost` nebo IP adresu serveru v prohlížeči
+
+---
+## Testování a ověření funkčnosti
+Po dokončení provisioning proveď následující kontroly:
+- Webserver běží:
+   ```bash
+   systemctl status nginx
+- Porty otevřené:
+   ```bash
+   ss -tuln | grep :80
+- Firewall neblokuje komunikaci:
+   ```bash
+   ufw status
+- Fail2ban chrání server:
+   ```bash
+   fail2ban-client status
+- Ansible playbook proběhl bez chyb:
+Sleduj výstup playbooku – neměly by se objevit chyby typu „FAILED“ nebo „UNREACHABLE“
 
 ---
 ## Požadavky na prostředí
@@ -50,10 +67,11 @@ Heslo k Vaultu zadej při výzvě (tajemstvi123).
 - Ansible 2.10+
 - Linux server nebo VM s SSH přístupem
 - Vault heslo pro šifrované proměnné
-- Správně nastavený `inventory.ini` soubor
+- Správně nastavený soubor `inventory/hosts.ini`
+- Nainstalovaný sudo (pro běh s `become: true`)
 
 ## Ansible Vault — Bezpečné uchování hesla
-Citlivé heslo je zašifrováno pomocí ansible-vault:
+Citlivé heslo je zašifrováno pomocí `ansible-vault`:
 ansible-vault encrypt group_vars/web/vault
 Proměnná:
 webapp_password: "tajneheslo123"
@@ -92,6 +110,15 @@ Uživatel webapp vytvořen pomocí hesla z Vaultu
 - **Webserver** - Ano
 - **Vault (heslo)** - Ano
 - **Provisioning** - Ano, bez chyby
+
+## Informace o projektu
+Projekt slouží k automatizované instalaci a konfiguraci webserveru pomocí Ansible. Obsahuje:
+- Role pro Nginx, Fail2ban, zabezpečení serveru
+- Vault pro uchování citlivých proměnných
+- Playbooky pro snadné nasazení
+Vychází z [static-web-test](https://github.com/xyz/ansible-template) a byl rozšířen o další zabezpečovací prvky a automatizace.
+
+**Projekt byl plně otestován — provisioning proběhl bez chyb, všechny služby byly úspěšně ověřeny.**
 
 ## Související projekt
 Tento projekt vychází z [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), který slouží pro testování a učení práce se statickými weby.
