@@ -2,16 +2,16 @@
 Automatizované nasazení a zabezpečení webového serveru pomocí Ansible
 
 ---
-## ℹ️ Informace o projektu
+## Informace o projektu
 Tento projekt slouží k automatizované instalaci a konfiguraci webového serveru pomocí Ansible. Obsahuje:
 - Role pro Nginx, Fail2ban, firewall, SSH a automatické aktualizace
 - Použití `ansible-vault` pro bezpečné uchování hesel
 - Playbooky a skript `provision.sh` pro snadné nasazení
-🔗 Projekt vychází z [static-web-test](https://github.com/Miska296/static-web-test), vytvořeného v prostředí Remplit, a byl výrazně rozšířen o bezpečnostní prvky, automatizaci a systémovou správu.
-✅ **Projekt byl plně otestován — provisioning proběhl bez chyb, všechny služby byly úspěšně ověřeny.**
+Projekt vychází z [static-web-test](https://github.com/Miska296/static-web-test), vytvořeného v prostředí Remplit, a byl výrazně rozšířen o bezpečnostní prvky, automatizaci a systémovou správu.
+**Projekt byl plně otestován — provisioning proběhl bez chyb, všechny služby byly úspěšně ověřeny.**
 
 ---
-## 💻 Projekt: Ansible Web Server `ansible-web-wm`
+## Projekt: Ansible Web Server `ansible-web-wm`
 Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 - bezpečnostní konfiguraci (`firewall`, `fail2ban`, `ssh`)
 - automatické aktualizace systému
@@ -137,11 +137,3 @@ Tento projekt vychází z původního repozitáře [static-web-test](https://git
 Projekt vypracovala Michaela Kučerová
 Verze: 1.0
 Datum: červenec 2025
-
-## Informace o projektu
-Projekt slouží k automatizované instalaci a konfiguraci webserveru pomocí Ansible. Obsahuje:
-- Role pro Nginx, Fail2ban, zabezpečení serveru
-- Vault pro uchování citlivých proměnných
-- Playbooky pro snadné nasazení
-Vychází z [static-web-test](https://github.com/xyz/ansible-template) a byl rozšířen o další zabezpečovací prvky a automatizace.
-**Projekt byl plně otestován — provisioning proběhl bez chyb, všechny služby byly úspěšně ověřeny.**
