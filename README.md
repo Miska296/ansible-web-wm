@@ -20,18 +20,13 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 - použití `ansible-vault` pro šifrování citlivých údajů
 
 ---
-## Struktura projektu
-kořenová složka `ansible-web-wm`:
-- inventory/hosts.ini
-- playbooks/webserver.yml
-- roles/users
-- roles/webserver
-- roles/firewall
-- roles/ssh
-- roles/updates
-- group_vars/web/vault  # zašifrovaný soubor s heslem
-- provision.sh
-- README.md
+## Požadavky na prostředí
+- Python 3.8+
+- Ansible 2.10+
+- Linux server nebo VM s SSH přístupem
+- Vault heslo pro šifrované proměnné
+- Správně nastavený soubor `inventory/hosts.ini`
+- Nainstalovaný `sudo` (pro běh s `become: true`)
 
 ---
 ## Spuštění projektu
@@ -45,23 +40,14 @@ kořenová složka `ansible-web-wm`:
 3. Spusť provisioning:
    ```bash
    ./provision.sh
-Alternativně použij přímo Ansible playbook:
+# Alternativně použij přímo Ansible playbook:
    ```bash
    ansible-playbook -i inventory/hosts.ini playbooks/webserver.yml --ask-vault-pass
    ```
 4. Zadej heslo k Vaultu při výzvě:
-   tajemstvi123  # Ukázkové heslo
+   # Zadejte vlastní heslo
 6. Ověř funkčnost webserveru:
 - Otevři `http://localhost` nebo IP adresu serveru v prohlížeči
-
----
-## Požadavky na prostředí
-- Python 3.8+
-- Ansible 2.10+
-- Linux server nebo VM s SSH přístupem
-- Vault heslo pro šifrované proměnné
-- Správně nastavený soubor `inventory/hosts.ini`
-- Nainstalovaný `sudo` (pro běh s `become: true`)
 
 ---
 ## Ansible Vault — Bezpečné uchování hesla
@@ -94,6 +80,20 @@ Alternativně použij přímo Ansible playbook:
     enabled: true
 - SSH je zabezpečeno (např. zakázání root přihlášení)
 - Firewall chrání server a povoluje pouze nezbytné porty (např. 22, 80)
+
+---
+## Struktura projektu
+kořenová složka `ansible-web-wm`:
+- inventory/hosts.ini
+- playbooks/webserver.yml
+- roles/users
+- roles/webserver
+- roles/firewall
+- roles/ssh
+- roles/updates
+- group_vars/web/vault  # zašifrovaný soubor s heslem
+- provision.sh
+- README.md
 
 ## Bonusové funkce
 - Automatické bezpečnostní aktualizace:
@@ -137,3 +137,8 @@ Tento projekt vychází z původního repozitáře [static-web-test](https://git
 Projekt vypracovala Michaela Kučerová
 Verze: 1.0
 Datum: červenec 2025
+
+---
+## Licence
+Projekt je vytvořen pro vzdělávací účely.  
+Použití nebo sdílení je možné po dohodě s autorkou.
