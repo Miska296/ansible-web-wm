@@ -11,7 +11,7 @@ sudo apt install -y ansible git ssh
 # Nastavit cestu k rolím
 export ANSIBLE_ROLES_PATH="./roles"
 
-# Spuštění playbooku
-ansible-playbook -i inventory/hosts.ini playbooks/webserver.yml
+# Spuštění playbooku s Vault heslem
+ansible-playbook -i inventory/hosts.ini playbooks/webserver.yml --ask-vault-pass
 
 echo "Provisioning dokončen!"
