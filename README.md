@@ -30,13 +30,11 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 
 ---
 ## Spuštění projektu
-1. Naklonuj repozitář:
-   ```bash
-   git clone https://github.com/Miska296/ansible-web-wm.git
-   cd ansible-web-wm
-**Poznámka:**  
-Pokud už máte repozitář stažený, nemusíte znovu provádět `git clone`.  
-Stačí otevřít adresář projektu a spustit provisioning.
+1. Klonování repozitáře (volitelně)
+Pokud ještě nemáte repozitář stažený:
+```bash
+git clone https://github.com/Miska296/ansible-web-wm.git
+cd ansible-web-wm
 2. Nastav cestu k rolím (v `provision.sh` už připraveno):
    ```bash
    export ANSIBLE_ROLES_PATH="./roles"
