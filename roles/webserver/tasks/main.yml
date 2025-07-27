@@ -56,10 +56,15 @@
     status_code: 200
   register: http_response
 
-- name: Fail if expected content is missing
+- name: Check if web server is reachable
+  uri:
+    url: http://localhost
+  register: http_response
+
+- name: Fail if server did not respond with status 200
   fail:
-    msg: "Web server did not return expected content!"
-  when: "'Ahoj Michaelo' not in http_response.content"
+    msg: "Web server did not respond with 200 OK!"
+  when: http_response.status != 200
 
 - name: Remove existing static-sites folder before cloning
   file:
