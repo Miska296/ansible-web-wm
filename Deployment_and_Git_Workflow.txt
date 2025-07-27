@@ -1,0 +1,19 @@
+## Deployment and Git Workflow
+
+---
+## Postup nasazení aplikace
+Projekt byl nasazen pomocí skriptu `provision.sh` v prostředí Codespace. Nasazení zahrnovalo:
+- Instalaci potřebných balíků (Nginx, UFW, atd.)
+- Konfiguraci firewallu (povolení portu 80)
+- Nastavení virtualhostu pomocí šablony
+Zajištění, že služba Nginx byla spuštěna a dostupná.
+Úspěšné nasazení bylo ověřeno přístupem na webovou stránku `http://localhost`.
+
+---
+## Práce s verzovacím systémem Git
+Projekt byl inicializován jako Git repozitář a nahrán na GitHub (https://github.com/Miska296/ansible-web-wm). Během vývoje byly prováděny následující kroky:
+- Průběžné ukládání změn (`git commit`)
+- Odesílání aktualizací na GitHub (`git push`)
+- Finální verze byla ověřena, commitnuta a pushnuta z Codespace
+- Stav repozitáře byl potvrzen příkazem `git status` (větve byly synchronní)
+Tímto dokumentem doplňuji videonahrávku a zdrojový kód, abych představila celý postup.
