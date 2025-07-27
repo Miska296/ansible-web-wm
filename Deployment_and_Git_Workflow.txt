@@ -6,7 +6,7 @@ Projekt byl nasazen pomocí skriptu `provision.sh` v prostředí Codespace. Nasa
 - Instalaci potřebných balíků (Nginx, UFW, atd.)
 - Konfiguraci firewallu (povolení portu 80)
 - Nastavení virtualhostu pomocí šablony
-Zajištění, že služba Nginx byla spuštěna a dostupná.
+Ověření, že služba Nginx byla úspěšně spuštěna a webová stránka dostupná.
 Úspěšné nasazení bylo ověřeno přístupem na webovou stránku `http://localhost`.
 
 ---
