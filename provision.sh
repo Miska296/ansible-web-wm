@@ -15,3 +15,10 @@ export ANSIBLE_ROLES_PATH="./roles"
 ansible-playbook -i inventory/hosts.ini playbooks/webserver.yml --ask-vault-pass
 
 echo "Provisioning dokončen!"
+
+echo "Spouštím Nginx..."
+if sudo service nginx start; then
+    echo "Nginx byl úspěšně spuštěn!"
+else
+    echo "Nepodařilo se spustit Nginx."
+fi
