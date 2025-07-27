@@ -42,7 +42,7 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
    ```bash
    ./provision.sh
 4. Zadejte heslo k Vaultu při výzvě.
-   # Zadejte vlastní heslo
+   #Zadejte vlastní heslo
 5. Ověř funkčnost webserveru: 
 Otevřete v prohlížeči `http://localhost` nebo příslušnou IP adresu — měla by se zobrazit stránka s textem:
 Hello from GitHub!
