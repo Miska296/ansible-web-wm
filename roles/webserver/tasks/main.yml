@@ -59,7 +59,7 @@
 - name: Fail if expected content is missing
   fail:
     msg: "Web server did not return expected content!"
-  when: "'Hello from GitHub!' not in http_response.content"
+  when: "'Hello from Ansible-managed NGINX!' not in http_response.content"
 
 - name: Remove existing static-sites folder before cloning
   file:
