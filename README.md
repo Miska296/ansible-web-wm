@@ -10,6 +10,8 @@ Tento projekt slouží k automatizované instalaci a konfiguraci webového serve
 Projekt vychází z [static-web-test](https://github.com/Miska296/static-web-test), vytvořeného v prostředí Remplit, a byl výrazně rozšířen o bezpečnostní prvky, automatizaci a systémovou správu.
 **Projekt byl plně otestován — provisioning proběhl bez chyb, všechny služby byly úspěšně ověřeny.**
 
+![Schéma nasazení](deployment-diagram.png)
+
 ---
 ## Projekt: Ansible Web Server `ansible-web-wm`
 Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
@@ -138,6 +140,6 @@ Verze: 1.0
 Datum: červenec 2025
 
 ---
-## Licence
-Projekt je vytvořen pro vzdělávací účely.  
-Použití nebo sdílení je možné po dohodě s autorkou.
+## Licence  
+Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](https://github.com/Miska296/ansible-web-wm/blob/main/LICENSE).
+
