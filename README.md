@@ -1,5 +1,6 @@
 # ansible-web-wm
 Automatizované nasazení a zabezpečení webového serveru pomocí Ansible
+- Tento projekt je dostupný také v anglické verzi: [README-en.md](README-en.md)
 
 ---
 ## Informace o projektu
