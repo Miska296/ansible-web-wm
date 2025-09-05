@@ -57,6 +57,23 @@ Enter your Vault password when prompted. Access the deployed site via http://loc
 - provision.sh
 - README.md
 
+## Troubleshooting
+During provisioning, the script may pause due to interactive prompts from `apt`, especially when updating configuration files like `sshd_config`.
+To prevent this, the script sets:
+```bash
+export DEBIAN_FRONTEND=noninteractive
+```
+This ensures non-interactive behavior during package installation and upgrades.
+If provisioning hangs, press Ctrl + C, run sudo apt upgrade manually, and choose to keep the current configuration (option 2).
+
+---
+## Best Practices
+- Always use `DEBIAN_FRONTEND=noninteractive` in automated scripts to avoid blocking prompts.
+- Structure your roles and playbooks clearly for maintainability.
+- Use `ansible-vault` for sensitive data.
+- Validate provisioning with `failed=0` and service status checks.
+- Document your project thoroughly — including diagrams, screenshots, and troubleshooting steps.
+
 ---
 ## Author
 Created by Michaela Kučerová Version: 1.0 Date: July 2025
