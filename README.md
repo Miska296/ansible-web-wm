@@ -113,7 +113,7 @@ kořenová složka `ansible-web-wm`:
    ```yaml
    - name: Enable automatic security updates
      copy:
-       dest: /etc/apt/apt.conf.d/20auto-upgrade
+       dest: /etc/apt/apt.conf.d/20auto-upgrades
    ```
 - Webová aplikace dostupná na portu 80
 - Uživatel webapp vytvořen pomocí hesla z Vaultu
