@@ -8,7 +8,7 @@ Tento projekt slouží k automatizované instalaci a konfiguraci webového serve
 - Role pro Nginx, Fail2ban, firewall, SSH a automatické aktualizace
 - Použití `ansible-vault` pro bezpečné uchování hesel
 - Playbooky a skript `provision.sh` pro snadné nasazení
-Projekt vychází z [static-web-test](https://github.com/Miska296/static-web-test), vytvořeného v prostředí Remplit, a byl výrazně rozšířen o bezpečnostní prvky, automatizaci a systémovou správu.
+Projekt vychází z [static-web-test](https://github.com/Miska296/static-web-test), vytvořeného v prostředí Replit, a byl výrazně rozšířen o bezpečnostní prvky, automatizaci a systémovou správu.
 **Projekt byl plně otestován — provisioning proběhl bez chyb, všechny služby byly úspěšně ověřeny.**
 
 ![Schéma nasazení](deployment-diagram.png)
@@ -38,14 +38,16 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
    ```bash
    git clone https://github.com/Miska296/ansible-web-wm.git
    cd ansible-web-wm
+   ```
 2. Nastavení cest k rolím (v provision.sh už připraveno):
    ```bash
    export ANSIBLE_ROLES_PATH="./roles"
+   ```
 3. Spuštění provisioningu:
    ```bash
    ./provision.sh
-4. Zadejte heslo k Vaultu při výzvě.
-   #Zadejte vlastní heslo
+   ```
+4. Po spuštění zadejte heslo k Vaultu při výzvě.
 5. Ověř funkčnost webserveru: 
 Otevřete v prohlížeči `http://localhost` nebo příslušnou IP adresu — měla by se zobrazit stránka s textem:
 Hello from GitHub!
@@ -56,30 +58,35 @@ This file was uploaded by Michaela for Ansible testing.
 - Citlivé heslo bylo zašifrováno pomocí `ansible-vault`:
    ```bash
    ansible-vault encrypt group_vars/web/vault
+   ```
 - Proměnná:
    ```yaml
    webapp_password: "tajneheslo123"
+   ```
 - Použita v roli `users`:
    ```yaml
    - name: Create dedicated user webapp with password from Vault
-  user:
-    name: webapp
-    password: "{{ webapp_password | password_hash('sha512') }}"
-    shell: /bin/bash
-    state: present
+   user:
+      name: webapp
+      password: "{{ webapp_password | password_hash('sha512') }}"
+      shell: /bin/bash
+      state: present
+   ```
 - Vault je výslovně načten v playbooku:
    ```yaml
    vars_files:
-  - ../group_vars/web/vault
+   - ../group_vars/web/vault
+   ```
 
 ---
 ## Další bezpečnostní prvky
 - `fail2ban` je nainstalován a aktivován:
    ```yaml
    - name: Enable fail2ban service
-  service:
-    name: fail2ban
-    enabled: true
+   service:
+      name: fail2ban
+      enabled: true
+   ```
 - SSH je zabezpečeno (např. zakázání root přihlášení)
 - Firewall chrání server a povoluje pouze nezbytné porty (např. 22, 80)
 
@@ -93,21 +100,25 @@ kořenová složka `ansible-web-wm`:
 - roles/firewall
 - roles/ssh
 - roles/updates
-- group_vars/web/vault  # zašifrovaný soubor s heslem #
+- group_vars/web/vault  *(zašifrovaný soubor s heslem)*
 - provision.sh
 - README.md
 
 ![Struktura složek](screenshots/project-structure.png)
+*Struktura projektu v Codespace*
 
+---
 ## Bonusové funkce
 - Automatické bezpečnostní aktualizace:
    ```yaml
    - name: Enable automatic security updates
-  copy:
-    dest: /etc/apt/apt.conf.d/20auto-upgrades
+     copy:
+       dest: /etc/apt/apt.conf.d/20auto-upgrade
+   ```
 - Webová aplikace dostupná na portu 80
 - Uživatel webapp vytvořen pomocí hesla z Vaultu
 
+---
 ## Stav projektu
 - **Správa uživatelů** — Ano
 - **Vault pro hesla** — Ano
@@ -116,68 +127,93 @@ kořenová složka `ansible-web-wm`:
 - **Webserver** — Ano
 - **Provisioning** — Ano, bez chyb
 
+---
 ## Testování a ověření funkčnosti
-![Výstup provisioning](screenshots/provisioning-output.png)
-Po dokončení provisioning proveď následující kontroly:
-- Webserver běží:
+Po dokončení provisioning proveďte následující kontroly:
+- **Webserver běží:**
    ```bash
    systemctl status nginx
+   ```
 - Porty otevřené:
    ```bash
    ss -tuln | grep :80
+   ```
 - Firewall neblokuje komunikaci:
    ```bash
    ufw status
+   ```
 - Fail2ban chrání server:
    ```bash
    fail2ban-client status
-- Ansible playbook proběhl bez chyb: Sleduj výstup v terminálu – failed=0 potvrzuje úspěch
+   ```
+- Ansible playbook proběhl bez chyb:
+Sledujte výstup v terminálu – `failed=0` potvrzuje úspěch
+
+![Výstup provisioning](screenshots/provisioning-output.png)
+*Úspěšné dokončení provisioning (`failed=0`)*
 
 Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v GitHub Codespace:  
 [glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev](https://glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev/)
+
 ![Náhled webové stránky](screenshots/web-preview.png)
+*Zobrazená stránka po nasazení NGINX*
+
+---
+## Video prezentace projektu
+Ukazuje kompletní běh skriptu `provision.sh`, nasazení webového serveru pomocí Ansible a ověření funkčnosti.
+
+[![Prezentace projektu ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
 
 ---
 ## Související projekt
-Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), kde byla vytvořena statická webová aplikace pomocí platformy Remplit. V projektu ansible-web-wm byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
+Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), kde byla vytvořena statická webová aplikace pomocí platformy Replit.
+V projektu `ansible-web-wm` byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
 
 ---
-## Řešení problémů (Troubleshooting)
-### Neotevřel se žádný port
+## Řešení problémů
+### 1. Neotevřel se žádný port
 Pokud po provisioning nejsou otevřené porty 22 (SSH) nebo 80 (HTTP), zkontrolujte následující:
 1. **Firewall (UFW)**  
    Ověřte stav firewallu:
    ```bash
    sudo ufw status
-Pokud je aktivní, povolte potřebné porty:
+   ```
+- Pokud je aktivní, povolte potřebné porty:
    ```bash
    sudo ufw allow 22
    sudo ufw allow 80
    sudo ufw reload
    ```
-### Porty nejsou dostupné v Codespace
-Pokud nejsou porty 22 nebo 80 viditelné v záložce „Ports“:
-- Otevřete záložku **Ports** v Codespace
-- Klikněte na **„Add port“**
-- Zadejte `80` a zaškrtněte **„Public“**
-- Po uložení se zobrazí veřejná URL, např. `https://username-repo-80.app.github.dev`
-- Otevřete ji v prohlížeči a ověřte, že se stránka načte
-- Ověřte, že NGINX naslouchá na všech rozhraních (`listen 80`, `listen [::]:80`)
 
-2. NGINX běží, ale není dostupný Ověřte stav služby:
+### 2. Porty nejsou dostupné v Codespace
+Pokud nejsou porty 22 nebo 80 viditelné v záložce „Ports“:
+1. Otevřete záložku **Ports** v Codespace
+2. Klikněte na **„Add port“**
+3. Zadejte `80` a zaškrtněte **„Public“**
+4. Po uložení se zobrazí veřejná URL, např. `https://username-repo-80.app.github.dev`
+5. Otevřete ji v prohlížeči a ověřte, že se stránka načte
+6. Ověřte, že NGINX naslouchá na všech rozhraních (`listen 80`, `listen [::]:80`)
+
+### 3. NGINX běží, ale není dostupný
+   Ověřte stav služby:
    ```bash
    systemctl status nginx
-Zkontrolujte, zda naslouchá na portu 80:
+   ```
+   Zkontrolujte, zda naslouchá na portu 80:
    ```bash
    ss -tuln | grep :80
    ```
-3. SSH přístup omezený
+
+### 4. SSH přístup omezený
 Pokud jste zakázali přihlášení pomocí hesla nebo root uživatele, ujistěte se, že máte správně nastavený SSH klíč v `sshd_config`.
-4. Provisioning proběhl, ale změny se neprojevily Zkuste provisioning spustit znovu:
+
+### 5. Provisioning proběhl, ale změny se neprojevily
+   Zkuste provisioning spustit znovu:
    ```bash
    ./provision.sh
+   ```
 
-### Web není dostupný zvenčí
+### 6. Web není dostupný zvenčí
 Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), zkontrolujte:
 1. **Konfiguraci NGINX**
    - Ujistěte se, že v šabloně `nginx.conf.j2` je:
@@ -201,12 +237,11 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
      ```
 
 ---
-## Osvědčené postupy (Best Practices)
+## Osvědčené postupy
 - Používejte `DEBIAN_FRONTEND=noninteractive` pro potlačení interaktivních dotazů při instalaci balíčků.
 - Využívejte `ansible-vault` pro bezpečné uchování citlivých údajů.
 - Po každém provisioning ověřte stav služeb (`nginx`, `fail2ban`, `ssh`) a otevřené porty.
-- Používejte `server_name _` v konfiguraci NGINX, pokud chcete, aby server reagoval na požadavky z libovolné domény nebo IP adresy.  
-  → `server_name localhost` omezuje přístup pouze na místní stroj, což může blokovat přístup v prostředích jako Codespaces nebo při testování zvenčí.
+- Používejte `server_name _` v konfiguraci NGINX, pokud chcete, aby server reagoval na požadavky z libovolné domény nebo IP adresy. → `server_name localhost` omezuje přístup pouze na místní stroj, což může blokovat přístup v prostředích jako Codespaces nebo při testování zvenčí.
 - Přidejte `listen [::]:80;` pro podporu IPv6, což zvyšuje dostupnost v moderních sítích.
 - Po každé změně konfigurace NGINX spusťte provisioning znovu a ověřte stav služby.
 - Dokumentujte strukturu projektu, diagram nasazení a výstupy provisioning.
