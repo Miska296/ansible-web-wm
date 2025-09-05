@@ -177,10 +177,38 @@ Pokud jste zakázali přihlášení pomocí hesla nebo root uživatele, ujistět
    ```bash
    ./provision.sh
 
+### Web není dostupný zvenčí
+Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), zkontrolujte:
+1. **Konfiguraci NGINX**
+   - Ujistěte se, že v šabloně `nginx.conf.j2` je:
+     ```nginx
+     server_name _;
+     listen 80;
+     listen [::]:80;
+     ```
+   - Tím zajistíte, že server naslouchá na všech rozhraních a není omezen na `localhost`.
+2. **Restart služby**
+   - V prostředí bez `systemd` použijte:
+     ```bash
+     service nginx restart
+     ```
+3. **Zveřejnění portu**
+   - V Codespace ručně přidejte port 80 v záložce „Ports“ a nastavte ho jako „Public“.
+4. **Firewall**
+   - Ověřte, že porty 22 a 80 jsou povolené:
+     ```bash
+     sudo ufw status
+     ```
+
+---
 ## Osvědčené postupy (Best Practices)
 - Používejte `DEBIAN_FRONTEND=noninteractive` pro potlačení interaktivních dotazů při instalaci balíčků.
 - Využívejte `ansible-vault` pro bezpečné uchování citlivých údajů.
 - Po každém provisioning ověřte stav služeb (`nginx`, `fail2ban`, `ssh`) a otevřené porty.
+- Používejte `server_name _` v konfiguraci NGINX, pokud chcete, aby server reagoval na požadavky z libovolné domény nebo IP adresy.  
+  → `server_name localhost` omezuje přístup pouze na místní stroj, což může blokovat přístup v prostředích jako Codespaces nebo při testování zvenčí.
+- Přidejte `listen [::]:80;` pro podporu IPv6, což zvyšuje dostupnost v moderních sítích.
+- Po každé změně konfigurace NGINX spusťte provisioning znovu a ověřte stav služby.
 - Dokumentujte strukturu projektu, diagram nasazení a výstupy provisioning.
 - Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
 
@@ -192,4 +220,4 @@ Datum: červenec 2025
 
 ---
 ## Licence  
-Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](https://github.com/Miska296/ansible-web-wm/blob/main/LICENSE).
+Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](LICENSE).
