@@ -18,6 +18,9 @@
   apt:
     name: fail2ban
     state: present
+    update_cache: yes
+  environment:
+    DEBIAN_FRONTEND: noninteractive
 
 - name: Enable fail2ban service
   service:
