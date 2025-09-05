@@ -22,47 +22,47 @@ Comprehensive automation of Linux servers using **Ansible**, focused on:
 - using `ansible-vault` for encrypting sensitive data
 
 ---
-## Požadavky na prostředí
+## Requirements for the environment
 - Python 3.8+
 - Ansible 2.10+
-- Linux server nebo VM s SSH přístupem
-- Vault heslo pro šifrované proměnné
-- Správně nastavený soubor `inventory/hosts.ini`
-- Nainstalovaný `sudo` (pro běh s `become: true`)
+- Linux server or VM with SSH access
+- Vault password for encrypted variables
+- Properly set file `inventory/hosts.ini`
+- Installed `sudo` (for running with `become: true`)
 
 ---
-## Spuštění projektu
-1. **Volitelné: Klonování repozitáře**
-   Pokud ještě nemáte repozitář stažený:
+## Project launch
+1. **Optional: Cloning the repository**
+   If you haven't downloaded the repository yet:
    ```bash
    git clone https://github.com/Miska296/ansible-web-wm.git
    cd ansible-web-wm
    ```
-2. Nastavení cest k rolím (v provision.sh už připraveno):
+2. Setting the paths to roles (already prepared in provision.sh):
    ```bash
    export ANSIBLE_ROLES_PATH="./roles"
    ```
-3. Spuštění provisioningu:
+3. Starting the provisioning:
    ```bash
    ./provision.sh
    ```
-4. Po spuštění zadejte heslo k Vaultu při výzvě.
-5. Ověř funkčnost webserveru: 
-Otevřete v prohlížeči `http://localhost` nebo příslušnou IP adresu — měla by se zobrazit stránka s textem:
+4. After launching, enter the password for the Vault when prompted.
+5. Check the functionality of the web server: 
+Open in your browser `http://localhost` or the corresponding IP address — a page with the text should appear:
 Hello from GitHub!
 This file was uploaded by Michaela for Ansible testing.
 
 ---
-## Ansible Vault — Bezpečné uchování hesla
-- Citlivé heslo bylo zašifrováno pomocí `ansible-vault`:
+## Ansible Vault — Safe storage of password
+- The sensitive password has been encrypted using `ansible-vault`:
    ```bash
    ansible-vault encrypt group_vars/web/vault
    ```
-- Proměnná:
+- Variable:
    ```yaml
    webapp_password: "tajneheslo123"
    ```
-- Použita v roli `users`:
+- Used in the role of `users`:
    ```yaml
    - name: Create dedicated user webapp with password from Vault
    user:
@@ -71,27 +71,27 @@ This file was uploaded by Michaela for Ansible testing.
       shell: /bin/bash
       state: present
    ```
-- Vault je výslovně načten v playbooku:
+- The vault is explicitly loaded in the playbook:
    ```yaml
    vars_files:
    - ../group_vars/web/vault
    ```
 
 ---
-## Další bezpečnostní prvky
-- `fail2ban` je nainstalován a aktivován:
+## Additional safety features
+- `fail2ban` is installed and activated:
    ```yaml
    - name: Enable fail2ban service
    service:
       name: fail2ban
       enabled: true
    ```
-- SSH je zabezpečeno (např. zakázání root přihlášení)
-- Firewall chrání server a povoluje pouze nezbytné porty (např. 22, 80)
+- SSH is secured (e.g. disabling root login)
+- The firewall protects the server and only allows necessary ports (e.g., 22, 80)
 
 ---
-## Struktura projektu
-kořenová složka `ansible-web-wm`:
+## Project structure
+root component `ansible-web-wm`:
 - inventory/hosts.ini
 - playbooks/webserver.yml
 - roles/users
@@ -99,30 +99,30 @@ kořenová složka `ansible-web-wm`:
 - roles/firewall
 - roles/ssh
 - roles/updates
-- group_vars/web/vault  # zašifrovaný soubor s heslem #
+- group_vars/web/vault *(encrypted file with a password)*
 - provision.sh
 - README.md
 
-![Struktura složek](screenshots/project-structure.png)
-*Struktura projektu v Codespace*
+![Structure of folders](screenshots/project-structure.png)
+*Project structure in Codespace*
 
-## Bonusové funkce
-- Automatické bezpečnostní aktualizace:
+## Bonus features
+- Automatic security updates:
    ```yaml
    - name: Enable automatic security updates
      copy:
        dest: /etc/apt/apt.conf.d/20auto-upgrade
    ```
-- Webová aplikace dostupná na portu 80
-- Uživatel webapp vytvořen pomocí hesla z Vaultu
+- Web application available on port 80
+- Webapp user created using a password from the Vault
 
-## Stav projektu
-- **Správa uživatelů** — Ano
-- **Vault pro hesla** — Ano
-- **Zabezpečení (firewall, fail2ban, ssh)** — Ano
-- **Automatické aktualizace** — Ano
-- **Webserver** — Ano
-- **Provisioning** — Ano, bez chyb
+## Project status
+- **User management** — Yes
+- **Password Vault** — Yes
+- **Security (firewall, fail2ban, ssh)** — Yes
+- **Automatic updates** — Yes
+- **Webserver** — Yes
+- **Provisioning** — Yes, without mistakes
 
 ## Testování a ověření funkčnosti
 Po dokončení provisioning proveď následující kontroly:
