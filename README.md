@@ -133,12 +133,17 @@ Po dokončení provisioning proveď následující kontroly:
 ![Struktura složek](screenshots/project-structure.png)  
 ![Webová stránka](screenshots/web-preview.png)
 
+![Náhled webové stránky](screenshots/web-preview.png)
+Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v GitHub Codespace:  
+[glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev](https://glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev/)
+
 ---
 ## Související projekt
 Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), kde byla vytvořena statická webová aplikace pomocí platformy Remplit. V projektu ansible-web-wm byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
 
 ---
 ## Řešení problémů (Troubleshooting)
+### Neotevřel se žádný port
 Pokud po provisioning nejsou otevřené porty 22 (SSH) nebo 80 (HTTP), zkontrolujte následující:
 1. **Firewall (UFW)**  
    Ověřte stav firewallu:
@@ -150,6 +155,15 @@ Pokud je aktivní, povolte potřebné porty:
    sudo ufw allow 80
    sudo ufw reload
    ```
+### Porty nejsou dostupné v Codespace
+Pokud nejsou porty 22 nebo 80 viditelné v záložce „Ports“:
+- Otevřete záložku **Ports** v Codespace
+- Klikněte na **„Add port“**
+- Zadejte `80` a zaškrtněte **„Public“**
+- Po uložení se zobrazí veřejná URL, např. `https://username-repo-80.app.github.dev`
+- Otevřete ji v prohlížeči a ověřte, že se stránka načte
+- Ověřte, že NGINX naslouchá na všech rozhraních (`listen 80`, `listen [::]:80`)
+
 2. NGINX běží, ale není dostupný Ověřte stav služby:
    ```bash
    systemctl status nginx
@@ -179,4 +193,3 @@ Datum: červenec 2025
 ---
 ## Licence  
 Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](https://github.com/Miska296/ansible-web-wm/blob/main/LICENSE).
-
