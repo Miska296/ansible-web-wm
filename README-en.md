@@ -124,84 +124,82 @@ root component `ansible-web-wm`:
 - **Webserver** — Yes
 - **Provisioning** — Yes, without mistakes
 
-## Testování a ověření funkčnosti
-Po dokončení provisioning proveď následující kontroly:
-- **Webserver běží:**
+## Testing and verification of functionality
+After completing the provisioning, please perform the following checks:
+- **Webserver is running:**
    ```bash
    systemctl status nginx
    ```
-- Porty otevřené:
+- Open ports:
    ```bash
    ss -tuln | grep :80
    ```
-- Firewall neblokuje komunikaci:
+- The firewall does not block communication:
    ```bash
    ufw status
    ```
-- Fail2ban chrání server:
+- Fail2ban protects the server:
    ```bash
    fail2ban-client status
    ```
-- Ansible playbook proběhl bez chyb:
-Sleduj výstup v terminálu – `failed=0` potvrzuje úspěch
+- The Ansible playbook ran without errors:
+Watch the output in the terminal – `failed=0` confirms success.
 
-![Výstup provisioning](screenshots/provisioning-output.png)
-*Úspěšné dokončení provisioning (`failed=0`)*
+![Provisioning output](screenshots/provisioning-output.png)
+*Successful completion of provisioning (`failed=0`)*
 
-Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v GitHub Codespace:  
+The web page has been successfully deployed and is available at the public address in GitHub Codespace: 
 [glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev](https://glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev/)
 
-![Náhled webové stránky](screenshots/web-preview.png)
-*Zobrazená stránka po nasazení NGINX*
+![Website preview](screenshots/web-preview.png)
+*Displayed page after deploying NGINX*
 
 ---
-## Video prezentace projektu
-Ukazuje kompletní běh skriptu `provision.sh`, nasazení webového serveru pomocí 
-Ansible a ověření funkčnosti.
+## Video presentation of the project
+It shows the complete run of the script `provision.sh`, deployment of a web server using Ansible and verification of functionality.
 
-[![Prezentace projektu ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
-
----
-## Související projekt
-Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), kde byla vytvořena statická webová aplikace pomocí platformy Replit.
-V projektu `ansible-web-wm` byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
+[![Presentation of the ansible-web-wm project](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
 
 ---
-## Řešení problémů (Troubleshooting)
-### 1. Neotevřel se žádný port
-Pokud po provisioning nejsou otevřené porty 22 (SSH) nebo 80 (HTTP), zkontrolujte následující:
+## Related project
+This project is based on the original repository [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), where a static web application was created using the Replit platform. The project `ansible-web-wm` has been supplemented with automation, security features, and extensive testing.
+
+---
+## Troubleshooting
+### 1. No port has opened
+If ports 22 (SSH) or 80 (HTTP) are not open after provisioning, please check the following:
 1. **Firewall (UFW)**  
-   Ověřte stav firewallu:
+   Check the status of the firewall:
    ```bash
    sudo ufw status
    ```
-- Pokud je aktivní, povolte potřebné porty:
+- If active, allow the necessary ports:
    ```bash
    sudo ufw allow 22
    sudo ufw allow 80
    sudo ufw reload
    ```
 
-### 2. Porty nejsou dostupné v Codespace
-Pokud nejsou porty 22 nebo 80 viditelné v záložce „Ports“:
-1. Otevřete záložku **Ports** v Codespace
-2. Klikněte na **„Add port“**
-3. Zadejte `80` a zaškrtněte **„Public“**
-4. Po uložení se zobrazí veřejná URL, např. `https://username-repo-80.app.github.dev`
-5. Otevřete ji v prohlížeči a ověřte, že se stránka načte
-6. Ověřte, že NGINX naslouchá na všech rozhraních (`listen 80`, `listen [::]:80`)
+### 2. Ports are not available in Codespace
+If ports 22 or 80 are not visible in the 'Ports' tab:
+1. Open the **Ports** tab in Codespace
+2. Click on **"Add port"**
+3. Enter `80` and check **'Public'**
+4. After saving, a public URL will be displayed, e.g. `https://username-repo-80.app.github.dev`
+5. Open it in the browser and verify that the page loads
+6. Check that NGINX is listening on all interfaces (`listen 80`, `listen [::]:80`)
 
-### 3. NGINX běží, ale není dostupný
-   Ověřte stav služby:
+### 3. NGINX is running but is not accessible.
+   Check the status of the service:
    ```bash
    systemctl status nginx
    ```
-   Zkontrolujte, zda naslouchá na portu 80:
+   Check if it is listening on port 80:
    ```bash
    ss -tuln | grep :80
    ```
 
-### 4. SSH přístup omezený
+### 4. SSH access restricted
 Pokud jste zakázali přihlášení pomocí hesla nebo root uživatele, ujistěte se, že máte správně nastavený SSH klíč v `sshd_config`.
 
 ### 5. Provisioning proběhl, ale změny se neprojevily

@@ -171,7 +171,7 @@ V projektu `ansible-web-wm` byla doplněna automatizace, bezpečnostní prvky a 
 
 ---
 ## Řešení problémů
-### 1. Neotevřel se žádný port
+### 1. Žádný port nebyl otevřen
 Pokud po provisioning nejsou otevřené porty 22 (SSH) nebo 80 (HTTP), zkontrolujte následující:
 1. **Firewall (UFW)**  
    Ověřte stav firewallu:
