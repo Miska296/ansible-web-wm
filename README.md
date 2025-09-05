@@ -138,6 +138,39 @@ Po dokončení provisioning proveď následující kontroly:
 Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), kde byla vytvořena statická webová aplikace pomocí platformy Remplit. V projektu ansible-web-wm byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
 
 ---
+## Řešení problémů (Troubleshooting)
+Pokud po provisioning nejsou otevřené porty 22 (SSH) nebo 80 (HTTP), zkontrolujte následující:
+1. **Firewall (UFW)**  
+   Ověřte stav firewallu:
+   ```bash
+   sudo ufw status
+Pokud je aktivní, povolte potřebné porty:
+   ```bash
+   sudo ufw allow 22
+   sudo ufw allow 80
+   sudo ufw reload
+   ```
+2. NGINX běží, ale není dostupný Ověřte stav služby:
+   ```bash
+   systemctl status nginx
+Zkontrolujte, zda naslouchá na portu 80:
+   ```bash
+   ss -tuln | grep :80
+   ```
+3. SSH přístup omezený
+Pokud jste zakázali přihlášení pomocí hesla nebo root uživatele, ujistěte se, že máte správně nastavený SSH klíč v `sshd_config`.
+4. Provisioning proběhl, ale změny se neprojevily Zkuste provisioning spustit znovu:
+   ```bash
+   ./provision.sh
+
+## Osvědčené postupy (Best Practices)
+- Používejte `DEBIAN_FRONTEND=noninteractive` pro potlačení interaktivních dotazů při instalaci balíčků.
+- Využívejte `ansible-vault` pro bezpečné uchování citlivých údajů.
+- Po každém provisioning ověřte stav služeb (`nginx`, `fail2ban`, `ssh`) a otevřené porty.
+- Dokumentujte strukturu projektu, diagram nasazení a výstupy provisioning.
+- Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
+
+---
 ## Autor
 Projekt vypracovala Michaela Kučerová
 Verze: 1.0
