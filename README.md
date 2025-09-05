@@ -93,9 +93,11 @@ kořenová složka `ansible-web-wm`:
 - roles/firewall
 - roles/ssh
 - roles/updates
-- group_vars/web/vault  # zašifrovaný soubor s heslem
+- group_vars/web/vault  # zašifrovaný soubor s heslem #
 - provision.sh
 - README.md
+
+![Struktura složek](screenshots/project-structure.png)
 
 ## Bonusové funkce
 - Automatické bezpečnostní aktualizace:
@@ -130,12 +132,10 @@ Po dokončení provisioning proveď následující kontroly:
    ```bash
    fail2ban-client status
 - Ansible playbook proběhl bez chyb: Sleduj výstup v terminálu – failed=0 potvrzuje úspěch
-![Struktura složek](screenshots/project-structure.png)  
-![Webová stránka](screenshots/web-preview.png)
 
-![Náhled webové stránky](screenshots/web-preview.png)
 Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v GitHub Codespace:  
 [glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev](https://glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev/)
+![Náhled webové stránky](screenshots/web-preview.png)
 
 ---
 ## Související projekt
