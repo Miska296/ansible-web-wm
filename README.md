@@ -115,6 +115,7 @@ kořenová složka `ansible-web-wm`:
 - **Provisioning** — Ano, bez chyb
 
 ## Testování a ověření funkčnosti
+![Výstup provisioning](screenshots/provisioning-output.png)
 Po dokončení provisioning proveď následující kontroly:
 - Webserver běží:
    ```bash
@@ -129,6 +130,8 @@ Po dokončení provisioning proveď následující kontroly:
    ```bash
    fail2ban-client status
 - Ansible playbook proběhl bez chyb: Sleduj výstup v terminálu – failed=0 potvrzuje úspěch
+![Struktura složek](screenshots/project-structure.png)  
+![Webová stránka](screenshots/web-preview.png)
 
 ---
 ## Související projekt
