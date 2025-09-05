@@ -200,55 +200,54 @@ If ports 22 or 80 are not visible in the 'Ports' tab:
    ```
 
 ### 4. SSH access restricted
-Pokud jste zakázali přihlášení pomocí hesla nebo root uživatele, ujistěte se, že máte správně nastavený SSH klíč v `sshd_config`.
+If you have disabled password authentication or root login, make sure you have the SSH key correctly set in `sshd_config`.
 
-### 5. Provisioning proběhl, ale změny se neprojevily
-   Zkuste provisioning spustit znovu:
+### 5. Provisioning has been completed, but the changes have not been applied.
+   Try to run the provisioning again:
    ```bash
    ./provision.sh
    ```
 
-### 6. Web není dostupný zvenčí
-Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), zkontrolujte:
-1. **Konfiguraci NGINX**
-   - Ujistěte se, že v šabloně `nginx.conf.j2` je:
+### 6. The web is not available from the outside.
+If the webpage does not display through a public URL (e.g., in Codespace), check:
+1. **NGINX Configuration**
+   - Make sure that in the template `nginx.conf.j2` there is:
      ```nginx
      server_name _;
      listen 80;
      listen [::]:80;
      ```
-   - Tím zajistíte, že server naslouchá na všech rozhraních a není omezen na `localhost`.
-2. **Restart služby**
-   - V prostředí bez `systemd` použijte:
+   - This ensures that the server listens on all interfaces and is not limited to `localhost`.
+2. **Restart the service**
+   - In an environment without `systemd`, use:
      ```bash
      service nginx restart
      ```
-3. **Zveřejnění portu**
-   - V Codespace ručně přidejte port 80 v záložce „Ports“ a nastavte ho jako „Public“.
+3. **Port publication**
+   - Manually add port 80 in the 'Ports' tab in Codespace and set it as 'Public'.
 4. **Firewall**
-   - Ověřte, že porty 22 a 80 jsou povolené:
+   - Check that ports 22 and 80 are allowed:
      ```bash
      sudo ufw status
      ```
 
 ---
-## Osvědčené postupy (Best Practices)
-- Používejte `DEBIAN_FRONTEND=noninteractive` pro potlačení interaktivních dotazů při instalaci balíčků.
-- Využívejte `ansible-vault` pro bezpečné uchování citlivých údajů.
-- Po každém provisioning ověřte stav služeb (`nginx`, `fail2ban`, `ssh`) a otevřené porty.
-- Používejte `server_name _` v konfiguraci NGINX, pokud chcete, aby server reagoval na požadavky z libovolné domény nebo IP adresy.  
-  → `server_name localhost` omezuje přístup pouze na místní stroj, což může blokovat přístup v prostředích jako Codespaces nebo při testování zvenčí.
-- Přidejte `listen [::]:80;` pro podporu IPv6, což zvyšuje dostupnost v moderních sítích.
-- Po každé změně konfigurace NGINX spusťte provisioning znovu a ověřte stav služby.
-- Dokumentujte strukturu projektu, diagram nasazení a výstupy provisioning.
-- Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
+## Best Practices
+- Use `DEBIAN_FRONTEND=noninteractive` to suppress interactive prompts when installing packages.
+- Use `ansible-vault` to securely store sensitive information.
+- After each provisioning, check the status of services (`nginx`, `fail2ban`, `ssh`) and open ports.
+- Use `server_name _` in the NGINX configuration if you want the server to respond to requests from any domain or IP address. → `server_name localhost` restricts access to only the local machine, which may block access in environments like Codespaces or when testing from the outside.
+- Add `listen [::]:80;` for IPv6 support, which enhances availability in modern networks.
+- After each configuration change in NGINX, run the provisioning again and check the status of the service.
+- Document the project structure, deployment diagram, and provisioning outputs.
+- Keep the repository structure clean - avoid nested folders.
 
 ---
-## Autor
-Projekt vypracovala Michaela Kučerová
-Verze: 1.0
-Datum: červenec 2025
+## Author
+The project was developed by Michaela Kučerová.
+Version: 1.0
+Date: July 2025
 
 ---
-## Licence  
-Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](LICENSE).
+## License  
+This project is available under the MIT license. See the file [LICENSE](LICENSE).

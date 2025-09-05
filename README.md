@@ -249,7 +249,7 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
 
 ---
 ## Autor
-Projekt vypracovala Michaela Kučerová
+Projekt vypracovala Michaela Kučerová.
 Verze: 1.0
 Datum: červenec 2025
 
