@@ -132,6 +132,8 @@ kořenová složka `ansible-web-wm`:
 - **Webserver** — Ano
 - **Provisioning** — Ano, bez chyb
 
+> **Živá ukázka:** [Zobrazit projekt na GitHub Pages](https://miska296.github.io/ansible-web-wm/)
+
 ---
 ## Testování a ověření funkčnosti
 Po dokončení provisioning proveďte následující kontroly:
@@ -273,4 +275,3 @@ Projekt vypracovala Michaela Kučerová
 ---
 ## License  
 Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](LICENSE)
-
