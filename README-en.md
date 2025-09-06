@@ -1,11 +1,12 @@
 # ansible-web-wm
 Automated deployment and security of a web server using Ansible
+- This project is also available in the Czech version: [README.md](README.md)
 
 ---
 ## Project information
 This project serves for automated installation and configuration of a web server using Ansible. It includes:
 - Roles for Nginx, Fail2ban, firewall, SSH and automatic updates
-- Usage `ansible-vault` for the secure storage of passwords
+- Using `ansible-vault` for the secure storage of passwords
 - Playbooks and scripts `provision.sh` for easy deployment
 The project is based on [static-web-test](https://github.com/Miska296/static-web-test), created in the Replit environment, and was significantly enhanced with security features, automation, and system management.
 **The project was fully tested — provisioning was completed without errors, all services were successfully validated.**
@@ -27,7 +28,7 @@ Comprehensive automation of Linux servers using **Ansible**, focused on:
 - Ansible 2.10+
 - Linux server or VM with SSH access
 - Vault password for encrypted variables
-- Properly set file `inventory/hosts.ini`
+- Properly configured file `inventory/hosts.ini`
 - Installed `sudo` (for running with `become: true`)
 
 ---
@@ -48,7 +49,7 @@ Comprehensive automation of Linux servers using **Ansible**, focused on:
    ```
 4. After launching, enter the password for the Vault when prompted.
 5. Check the functionality of the web server: 
-Open in your browser `http://localhost` or the corresponding IP address — a page with the text should appear:
+Open in your browser `http://localhost` or the corresponding IP address — a page with the text should be displayed:
 Hello from GitHub!
 This file was uploaded by Michaela for Ansible testing.
 
@@ -111,7 +112,7 @@ root component `ansible-web-wm`:
    ```yaml
    - name: Enable automatic security updates
      copy:
-       dest: /etc/apt/apt.conf.d/20auto-upgrade
+       dest: /etc/apt/apt.conf.d/20auto-upgrades
    ```
 - Web application available on port 80
 - Webapp user created using a password from the Vault
@@ -151,18 +152,20 @@ Watch the output in the terminal – `failed=0` confirms success.
 The web page has been successfully deployed and is available at the public address in GitHub Codespace: 
 [glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev](https://glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev/)
 
+> **Warning:** The public URL works only after the successful provisioning and publication of port 80 in the Codespace.
+
 ![Website preview](screenshots/web-preview.png)
-*Displayed page after deploying NGINX*
+*The displayed page after deploying NGINX*
 
 ---
 ## Video presentation of the project
-It shows the complete run of the script `provision.sh`, deployment of a web server using Ansible and verification of functionality.
+It shows the complete run of the script `provision.sh`, deploying the web server using Ansible and verifying its functionality.
 
-[![Presentation of the ansible-web-wm project](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
+[![Project presentation ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
 
 ---
 ## Related project
-This project is based on the original repository [static-web-test](https://github.com/Karan-Negi-12/Static-website-for-testing), where a static web application was created using the Replit platform. The project `ansible-web-wm` has been supplemented with automation, security features, and extensive testing.
+This project is based on the original repository [static-web-test](https://github.com/Miska296/static-web-test), where a static web application was created using the Replit platform. The project `ansible-web-wm` has been supplemented with automation, security features, and extensive testing.
 
 ---
 ## Troubleshooting
@@ -200,17 +203,17 @@ If ports 22 or 80 are not visible in the 'Ports' tab:
    ```
 
 ### 4. SSH access restricted
-If you have disabled password authentication or root login, make sure you have the SSH key correctly set in `sshd_config`.
+If you have disabled login using a password or root user, make sure you have the SSH key properly set in `sshd_config`.
 
-### 5. Provisioning has been completed, but the changes have not been applied.
+### 5. Provisioning has been completed, but the changes have not been applied
    Try to run the provisioning again:
    ```bash
    ./provision.sh
    ```
 
-### 6. The web is not available from the outside.
+### 6. The web is not available from the outside
 If the webpage does not display through a public URL (e.g., in Codespace), check:
-1. **NGINX Configuration**
+1. **NGINX configuration**
    - Make sure that in the template `nginx.conf.j2` there is:
      ```nginx
      server_name _;
@@ -224,7 +227,7 @@ If the webpage does not display through a public URL (e.g., in Codespace), check
      service nginx restart
      ```
 3. **Port publication**
-   - Manually add port 80 in the 'Ports' tab in Codespace and set it as 'Public'.
+   - Manually add port 80 in the tab in Codespace „Ports“ and set it as „Public“.
 4. **Firewall**
    - Check that ports 22 and 80 are allowed:
      ```bash
@@ -235,8 +238,9 @@ If the webpage does not display through a public URL (e.g., in Codespace), check
 ## Best Practices
 - Use `DEBIAN_FRONTEND=noninteractive` to suppress interactive prompts when installing packages.
 - Use `ansible-vault` to securely store sensitive information.
-- After each provisioning, check the status of services (`nginx`, `fail2ban`, `ssh`) and open ports.
-- Use `server_name _` in the NGINX configuration if you want the server to respond to requests from any domain or IP address. → `server_name localhost` restricts access to only the local machine, which may block access in environments like Codespaces or when testing from the outside.
+- After each provisioning, check the status of the services (`nginx`, `fail2ban`, `ssh`) and the open ports.
+- Use `server_name _` in the NGINX configuration if you want the server to respond to requests from any domain or IP address. 
+→ `server_name localhost` restricts access to only the local machine, which may block access in environments like Codespaces or when testing from the outside.
 - Add `listen [::]:80;` for IPv6 support, which enhances availability in modern networks.
 - After each configuration change in NGINX, run the provisioning again and check the status of the service.
 - Document the project structure, deployment diagram, and provisioning outputs.
