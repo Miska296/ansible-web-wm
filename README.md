@@ -250,11 +250,14 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
 - Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
 
 ---
-## Autor
-Projekt vypracovala Michaela Kučerová.
-Verze: 1.0
-Datum: červenec 2025
+## Autor  
+Projekt vypracovala Michaela Kučerová  
+**Verze:** 1.0  
+**Datum:** červenec 2025  
+**Poslední aktualizace:** September 2025  
+**Build:** OK  
 
 ---
-## Licence  
-Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](LICENSE).
+## License  
+Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](LICENSE)
+
