@@ -3,6 +3,7 @@
 ![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Last Updated](https://img.shields.io/badge/last--updated-September%202025-blue)
 ![Build](https://img.shields.io/badge/build-OK-brightgreen)
+![GitHub Pages](https://img.shields.io/badge/GitHub--Pages-Live-green)
 
 Automated deployment and security of a web server using Ansible
 - This project is also available in the Czech version: [README.md](README.md)
