@@ -155,6 +155,8 @@ Sledujte výstup v terminálu – `failed=0` potvrzuje úspěch
 Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v GitHub Codespace:  
 [glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev](https://glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev/)
 
+> **Upozornění:** Veřejná URL funguje až po úspěšném provisioning a zveřejnění portu 80 v Codespace.
+
 ![Náhled webové stránky](screenshots/web-preview.png)
 *Zobrazená stránka po nasazení NGINX*
 
