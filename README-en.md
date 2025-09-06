@@ -132,6 +132,8 @@ Root directory `ansible-web-wm`:
 - **Webserver** — Yes
 - **Provisioning** — Yes, without mistakes
 
+> **Live demo:** [View the project on GitHub Pages](https://miska296.github.io/ansible-web-wm/)
+
 ## Testing and verification of functionality
 After completing the provisioning, please perform the following checks:
 - **Webserver is running:**
