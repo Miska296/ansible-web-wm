@@ -257,6 +257,14 @@ If the webpage does not display through a public URL (e.g., in Codespace), check
 - Keep the repository structure clean - avoid nested folders.
 
 ---
+## Future improvements
+- Add automated testing using GitHub Actions
+- Create a dynamic web interface for provisioning
+- Add support for Docker-based deployment
+- Implement logging and monitoring (e.g., Prometheus, Grafana)
+- Translate documentation into more languages
+
+---
 ## Author
 The project was developed by Michaela Kučerová  
 **Version:** 1.0  
