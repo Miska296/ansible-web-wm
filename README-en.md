@@ -92,7 +92,7 @@ This file was uploaded by Michaela for Ansible testing.
 
 ---
 ## Project structure
-root component `ansible-web-wm`:
+Root directory `ansible-web-wm`:
 - inventory/hosts.ini
 - playbooks/webserver.yml
 - roles/users
@@ -106,6 +106,8 @@ root component `ansible-web-wm`:
 
 ![Structure of folders](screenshots/project-structure.png)
 *Project structure in Codespace*
+
+> cz For the Czech version of this documentation, see [README.md](README.md)
 
 ## Bonus features
 - Automatic security updates:
@@ -157,6 +159,8 @@ The web page has been successfully deployed and is available at the public addre
 ![Website preview](screenshots/web-preview.png)
 *The displayed page after deploying NGINX*
 
+> If the page displays “Hello from GitHub!”, the deployment was successful.
+
 ---
 ## Video presentation of the project
 It shows the complete run of the script `provision.sh`, deploying the web server using Ansible and verifying its functionality.
@@ -201,6 +205,7 @@ If ports 22 or 80 are not visible in the 'Ports' tab:
    ```bash
    ss -tuln | grep :80
    ```
+> Tip: Always verify that the port is marked as 'Public' in Codespace, otherwise the page won't be accessible externally.
 
 ### 4. SSH access restricted
 If you have disabled login using a password or root user, make sure you have the SSH key properly set in `sshd_config`.
