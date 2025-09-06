@@ -253,9 +253,11 @@ If the webpage does not display through a public URL (e.g., in Codespace), check
 
 ---
 ## Author
-The project was developed by Michaela Kučerová.
-Version: 1.0
-Date: July 2025
+The project was developed by Michaela Kučerová
+**Version:** 1.0
+**Date:** July 2025
+**Last updated:** September 2025
+**Build:** OK
 
 ---
 ## License  
