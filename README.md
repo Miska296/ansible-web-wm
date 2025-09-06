@@ -255,6 +255,14 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
 - Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
 
 ---
+## Budoucí vylepšení
+- Přidání automatizovaného testování pomocí GitHub Actions
+- Vytvoření dynamického webového rozhraní pro provisioning
+- Přidání podpory pro nasazení na bázi Dockeru
+- Implementování logování a monitorování (např. Prometheus, Grafana)
+- Přeložení dokumentace do dalších jazyků
+
+---
 ## Autor  
 Projekt vypracovala Michaela Kučerová  
 **Verze:** 1.0  
