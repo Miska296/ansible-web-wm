@@ -3,6 +3,7 @@
 ![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Last Updated](https://img.shields.io/badge/last--updated-September%202025-blue)
 ![Build](https://img.shields.io/badge/build-OK-brightgreen)
+![GitHub Pages](https://img.shields.io/badge/GitHub--Pages-Live-green)
 
 Automatizované nasazení a zabezpečení webového serveru pomocí Ansible
 - Tento projekt je dostupný také v anglické verzi: [README-en.md](README-en.md)
