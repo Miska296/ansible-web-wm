@@ -114,6 +114,7 @@ Root directory `ansible-web-wm`:
 
 > cz For the Czech version of this documentation, see [README.md](README.md)
 
+---
 ## Bonus features
 - Automatic security updates:
    ```yaml
@@ -124,6 +125,7 @@ Root directory `ansible-web-wm`:
 - Web application available on port 80
 - Webapp user created using a password from the Vault
 
+---
 ## Project status
 - **User management** — Yes
 - **Password Vault** — Yes
@@ -134,6 +136,7 @@ Root directory `ansible-web-wm`:
 
 > **Live demo:** [View the project on GitHub Pages](https://miska296.github.io/ansible-web-wm/)
 
+---
 ## Testing and verification of functionality
 After completing the provisioning, please perform the following checks:
 - **Webserver is running:**
