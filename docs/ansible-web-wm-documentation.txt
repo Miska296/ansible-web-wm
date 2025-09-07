@@ -1,57 +1,62 @@
-1. Titulní strana
+# 1. Titulní strana
 ANSIBLE WEB SERVER  
-Automated deployment and security of a Linux server using Ansible
+Automatizované nasazení a zabezpečení Linux serveru pomocí Ansible  
 
-Autor: Michaela Kučerová  
+Autor: Michaela Kučerová    
 Datum: Září 2025  
 Verze: 1.0  
 GitHub Pages: miska296.github.io/ansible-web-wm  
 GitHub: github.com/Miska296/ansible-web-wm  
-Behance: behance.net/portfolio/editor?project_id=233973635
+Behance: behance.net/portfolio/editor?project_id=233973635  
 
 ---
-2. Úvod
+## 2. Úvod
 - Cíl projektu: automatizace nasazení webového serveru pomocí Ansible
 - Použité technologie: NGINX, Fail2ban, firewall, SSH, ansible-vault
 - Výstup: funkční webová stránka, zabezpečený server, dokumentace v CZ i EN
 
 ---
-3. Struktura projektu
-- Složky: roles/, group_vars/, playbooks/, screenshots/, README.md, README-en.md
-- Klíčové soubory: provision.sh, vault, nginx.conf.j2, index.md
+## 3. Struktura projektu
+- Složky: `roles/`, `group_vars/`, `playbooks/`, `screenshots/`, `README.md`, `README-en.md`
+- Klíčové soubory: `provision.sh`, `vault`, `nginx.conf.j2`, `index.md`
 
 ---
-4. Postup nasazení
+## 4. Postup nasazení
 - Nastavení cest k rolím
-- Spuštění skriptu provision.sh
+- Spuštění skriptu `provision.sh`
 - Zadání hesla pro Vault
-- Ověření výstupu: failed=0, běžící NGINX, otevřený port 80
+- Ověření výstupu: `failed=0`, běžící NGINX, otevřený port 80
 
 ---
-5. Ověření funkčnosti
-- Příkazy: systemctl status nginx, ss -tuln | grep :80, ufw status, fail2ban-client status
+## 5. Ověření funkčnosti
+- Příkazy: `systemctl status nginx`, `ss -tuln | grep :80`, `ufw status`, `fail2ban-client status`
 - Zobrazení stránky: „Hello from GitHub!“
 - Veřejná URL: miska296.github.io/ansible-web-wm
 
 ---
-6. Screenshoty
-- Struktura složek v Codespace
-- Výstup provisioning
-- Náhled webové stránky
+## 6. Screenshoty
+### Struktura složek v Codespace
+![Project structure](screenshots/project-structure.png)
+
+### Výstup provisioning
+![Provisioning output](screenshots/provisioning-output.png)
+
+### Náhled webové stránky
+![Website preview](screenshots/web-preview.png)
 
 ---
-7. Video prezentace
+## 7. Video prezentace
 Odkaz na YouTube video s ukázkou běhu skriptu a nasazení: https://www.youtube.com/watch?v=aNvzjHr_p9I
 
 ---
-8. Future Improvements
+## 8. Budoucí vylepšení
 - Přidání CI/CD pomocí GitHub Actions
 - Docker-based deployment
 - Monitoring pomocí Prometheus/Grafana
 - Překlad do dalších jazyků
 
 ---
-9. Závěr
+## 9. Závěr
 - Projekt byl úspěšně dokončen a publikován
 - Dokumentace dostupná v CZ i EN
 - Prezentace na GitHub Pages a Behance
