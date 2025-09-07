@@ -1,0 +1,58 @@
+1. Titulní strana
+ANSIBLE WEB SERVER  
+Automated deployment and security of a Linux server using Ansible
+
+Autor: Michaela Kučerová  
+Datum: Září 2025  
+Verze: 1.0  
+GitHub Pages: miska296.github.io/ansible-web-wm  
+GitHub: github.com/Miska296/ansible-web-wm  
+Behance: behance.net/portfolio/editor?project_id=233973635
+
+---
+2. Úvod
+- Cíl projektu: automatizace nasazení webového serveru pomocí Ansible
+- Použité technologie: NGINX, Fail2ban, firewall, SSH, ansible-vault
+- Výstup: funkční webová stránka, zabezpečený server, dokumentace v CZ i EN
+
+---
+3. Struktura projektu
+- Složky: roles/, group_vars/, playbooks/, screenshots/, README.md, README-en.md
+- Klíčové soubory: provision.sh, vault, nginx.conf.j2, index.md
+
+---
+4. Postup nasazení
+- Nastavení cest k rolím
+- Spuštění skriptu provision.sh
+- Zadání hesla pro Vault
+- Ověření výstupu: failed=0, běžící NGINX, otevřený port 80
+
+---
+5. Ověření funkčnosti
+- Příkazy: systemctl status nginx, ss -tuln | grep :80, ufw status, fail2ban-client status
+- Zobrazení stránky: „Hello from GitHub!“
+- Veřejná URL: miska296.github.io/ansible-web-wm
+
+---
+6. Screenshoty
+- Struktura složek v Codespace
+- Výstup provisioning
+- Náhled webové stránky
+
+---
+7. Video prezentace
+Odkaz na YouTube video s ukázkou běhu skriptu a nasazení: https://www.youtube.com/watch?v=aNvzjHr_p9I
+
+---
+8. Future Improvements
+- Přidání CI/CD pomocí GitHub Actions
+- Docker-based deployment
+- Monitoring pomocí Prometheus/Grafana
+- Překlad do dalších jazyků
+
+---
+9. Závěr
+- Projekt byl úspěšně dokončen a publikován
+- Dokumentace dostupná v CZ i EN
+- Prezentace na GitHub Pages a Behance
+- Připraveno k použití jako ukázka technických dovedností
