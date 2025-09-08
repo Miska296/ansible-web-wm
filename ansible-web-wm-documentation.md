@@ -36,13 +36,13 @@ Behance: behance.net/portfolio/editor?project_id=233973635
 ---
 ## 6. Screenshoty
 ### Struktura složek v Codespace
-![Project structure](screenshots/project-structure.png)
+![Project structure](./screenshots/project-structure.png)
 
 ### Výstup provisioning
-![Provisioning output](screenshots/provisioning-output.png)
+![Provisioning output](./screenshots/provisioning-output.png)
 
 ### Náhled webové stránky
-![Website preview](screenshots/web-preview.png)
+![Website preview](./screenshots/web-preview.png)
 
 ---
 ## 7. Video prezentace
