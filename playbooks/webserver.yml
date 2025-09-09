@@ -10,3 +10,14 @@
     - firewall
     - ssh
     - updates
+
+- name: Validate web server response
+  uri:
+    url: http://localhost
+    return_content: yes
+  register: web_response
+
+- name: Check that response contains expected text
+  assert:
+    that:
+      - "'Hello from GitHub!' in web_response.content"
