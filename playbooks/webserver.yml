@@ -20,4 +20,4 @@
 - name: Check that response contains expected text
   assert:
     that:
-      - "'Hello from GitHub!' in web_response.content"
+      - "'Hello from Ansible-managed NGINX!' in web_response.content"
