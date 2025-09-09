@@ -1,18 +1,3 @@
----
-- name: Configure web server and security
-  hosts: web
-  vars_files:
-    - ../group_vars/web/vault
-  become: true
-  roles:
-    - users
-    - webserver
-    - firewall
-    - ssh
-    - updates
-    - validation
-
-tasks:
 - name: Validate web server response
   uri:
     url: http://localhost
