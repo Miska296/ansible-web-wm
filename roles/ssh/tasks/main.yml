@@ -1,3 +1,11 @@
+- name: Install openssh-server safely
+  apt:
+    name: openssh-server
+    state: present
+    dpkg_options: "--force-confold"
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
 - name: Disable root login
   lineinfile:
     path: /etc/ssh/sshd_config
