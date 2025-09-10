@@ -1,64 +1,100 @@
 # Ansible Web Server Deployment
-
+---
 ## 🧾 Projekt: ansible-web-wm
 Automatizované nasazení a zabezpečení webového serveru pomocí Ansible v prostředí GitHub Codespace. Projekt zahrnuje konfiguraci SSH, firewallu, aktualizací systému, nasazení statického webu a validaci funkčnosti.
 
 ---
 ## 🚀 Jak spustit provisioning
 1. Nastav cestu k rolím:
-    bash
+    ```bash
     export ANSIBLE_ROLES_PATH="./roles"
+    ```
 2. Spusť provisioning:
-    bash
+    ```bash
     ./provision.sh
+    ```
 3. Ověř, že NGINX běží:
-    bash
+    ```bash
     curl http://localhost
+    ```
 4. Otevři veřejnou URL (např. v Codespace): https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev
 
 ---
 ## 🧩 Struktura projektu
 inventory/
-└── hosts.ini          # Definice cílového hostitele
+└── hosts.ini          *(Definice cílového hostitele)*
 
 playbooks/
-└── webserver.yml      # Hlavní playbook
+└── webserver.yml      *(Hlavní playbook)*
 
 roles/
-├── users/             # Vytváření uživatelů
-├── ssh/               # Konfigurace SSH
-├── firewall/          # UFW + fail2ban
-├── updates/           # Systémové aktualizace
-├── webserver/         # Instalace a konfigurace NGINX
-├── validation/        # Ověření funkčnosti webu
+├── users/             *(Vytváření uživatelů)*
+├── ssh/               *(Konfigurace SSH)*
+├── firewall/          *(UFW + fail2ban)*
+├── updates/           *(Systémové aktualizace)*
+├── webserver/         *(Instalace a konfigurace NGINX)*
+├── validation/        *(Ověření funkčnosti webu)*
 └── group_vars/
     └── web/
-        └── vault      # Hesla a proměnné chráněné Vaultem
+        └── vault      *(Hesla a proměnné chráněné Vaultem)*
 
 ---
 ## 🔐 Zabezpečení
 - SSH:
-    - Zakázán root login (PermitRootLogin no)
-    - Zakázáno heslové přihlášení (PasswordAuthentication no)
-    - Ansible spravuje sshd_config s --force-confold pro bezpečné aktualizace
+    - Zakázán root login (`PermitRootLogin no`)
+    - Zakázáno heslové přihlášení (`PasswordAuthentication no`)
+    - Ansible spravuje `sshd_config` s `--force-confold` pro bezpečné aktualizace
 
 - Firewall (UFW):
-    - Povolené porty: 22/tcp, 80/tcp (včetně IPv6)
-    - Stav ověříš příkazem:
-    bash
-    sudo ufw status
+    - Povolené porty: `22/tcp`, `80/tcp` (včetně IPv6)
+    - Stav ověříte příkazem:
+        ```bash
+        sudo ufw status
+        ```
 
 - Fail2ban:
-    - Automatická ochrana proti brute-force útokům
+    - Automatická ochrana proti `brute-force` útokům
 
 ---
 ## 🌐 Webový server
-NGINX:
+- NGINX:
+    - Instalace přes `apt`
+    - Konfigurace pomocí šablony `nginx.conf.j2`
+    - Root adresář: `/opt/static-sites`
+    - Obsah generován ze šablony `index.html.j2`:
+        ```html
+        <h1>Hello from Ansible-managed NGINX!</h1>
+        ```
 
-Instalace přes apt
+- Git deploy (volitelně):
+    - Repozitář: `static-web-test`
+    - Klonuje se do `/opt/static-sites`
+    - Přepis `index.html` z šablony zajišťuje validaci
 
-Konfigurace pomocí šablony nginx.conf.j2
+---
+## ✅ Validace funkčnosti
+Role `validation` ověřuje, že webový server odpovídá správně:
+    ```yaml
+    - name: Validate web server response
+    uri:
+        url: http://localhost
+        return_content: yes
+    register: web_response
 
-Root adresář: /opt/static-sites
+    - name: Check that response contains expected text
+    assert:
+        that:
+        - "'Hello from Ansible-managed NGINX!' in web_response.content"
+    ```
 
-Obsah generován ze šablony index.html.j2:
+---
+## 🧠 Bonusové body
+- 🔐 Ansible Vault: chrání citlivé proměnné (např. hesla)
+- 🔁 Idempotence: opakované spuštění playbooku nezpůsobí chyby
+- 🔄 Handlers: restart služeb pouze při změně konfigurace
+- 🧪 Debug výpisy: pro ladění obsahu `index.html` a odpovědi serveru
+
+---
+## 🧑‍💻 Autor
+Michaela Kučerová
+Projekt vytvořen a testován v GitHub Codespace
