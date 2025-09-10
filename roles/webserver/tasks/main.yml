@@ -24,18 +24,18 @@
     state: started
     enabled: true
 
-# - name: Copy index.html
-#   template:
-#     src: index.html.j2
-#     dest: /opt/static-sites/index.html
-#   notify: restart nginx
+- name: Copy index.html
+  template:
+    src: index.html.j2
+    dest: /opt/static-sites/index.html
+  notify: restart nginx
 
-# - name: Set ownership of index.html
-#   file:
-#     path: /opt/static-sites/index.html
-#     owner: webapp
-#     group: webapp
-#     mode: '0644'
+- name: Set ownership of index.html
+  file:
+    path: /opt/static-sites/index.html
+    owner: webapp
+    group: webapp
+    mode: '0644'
 
 - name: Deploy custom NGINX config
   template:
