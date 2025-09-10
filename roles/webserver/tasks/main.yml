@@ -71,6 +71,14 @@
     dest: /opt/static-sites/index.html
   notify: restart nginx
 
+- name: Debug index.html content
+  command: cat /opt/static-sites/index.html
+  register: index_content
+
+- name: Show index.html content
+  debug:
+    var: index_content.stdout
+
 - name: Set ownership of index.html
   file:
     path: /opt/static-sites/index.html
