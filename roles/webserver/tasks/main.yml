@@ -85,3 +85,4 @@
     owner: webapp
     group: webapp
     mode: '0644'
+  notify: restart nginx
