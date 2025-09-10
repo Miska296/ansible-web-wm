@@ -71,9 +71,9 @@
     path: /opt/static-sites
     state: absent
 
-- name: Clone static site from GitHub
-  git:
-    repo: 'https://github.com/Miska296/static-web-test.git'
-    dest: /opt/static-sites
-    version: main
-    force: yes
+#- name: Clone static site from GitHub
+#  git:
+#    repo: 'https://github.com/Miska296/static-web-test.git'
+#    dest: /opt/static-sites
+#    version: main
+#    force: yes
