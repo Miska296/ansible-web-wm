@@ -1,13 +1,15 @@
-# ansible-web-wm
+# Ansible Web Server Deployment
 
 ![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Last Updated](https://img.shields.io/badge/last--updated-September%202025-blue)
 ![Build](https://img.shields.io/badge/build-OK-brightgreen)
 ![GitHub Pages](https://img.shields.io/badge/GitHub--Pages-Live-green)
 
-Automatizované nasazení a zabezpečení webového serveru pomocí Ansible
+Automatizované nasazení a zabezpečení webového serveru pomocí Ansible v prostředí GitHub Codespace. Projekt zahrnuje konfiguraci SSH, firewallu, aktualizací systému, nasazení statického webu a validaci funkčnosti.
 - Tento projekt je dostupný také v anglické verzi: [README-en.md](README-en.md)
 
+🔹 Úvodní část
+1. Informace o projektu
 ---
 ## Informace o projektu
 Tento projekt slouží k automatizované instalaci a konfiguraci webového serveru pomocí Ansible. Obsahuje:
@@ -19,6 +21,8 @@ Projekt vychází z [static-web-test](https://github.com/Miska296/static-web-tes
 
 ![Schéma nasazení](deployment-diagram.png)
 
+
+2. Projekt: Ansible Web Server ansible-web-wm
 ---
 ## Projekt: Ansible Web Server `ansible-web-wm`
 Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
@@ -28,6 +32,8 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 - nasazení jednoduchého webserveru
 - použití `ansible-vault` pro šifrování citlivých údajů
 
+
+3. Požadavky na prostředí
 ---
 ## Požadavky na prostředí
 - Python 3.8+
@@ -37,6 +43,30 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 - Správně nastavený soubor `inventory/hosts.ini`
 - Nainstalovaný `sudo` (pro běh s `become: true`)
 
+
+🔹 Nasazení a konfigurace
+4. Struktura projektu
+---
+## Struktura projektu
+kořenová složka `ansible-web-wm`:
+- inventory/hosts.ini      *(Definice cílového hostitele)*
+
+- playbooks/webserver.yml  *(Hlavní playbook)*
+
+- roles/users              *(Vytváření uživatelů)*
+- roles/ssh                *(Konfigurace SSH)*
+- roles/firewall           *(UFW + fail2ban)*
+- roles/updates            *(Systémové aktualizace)*
+- roles/webserver          *(Instalace a konfigurace NGINX)*
+- roles/validation         *(Ověření funkčnosti webu)*
+- group_vars/web/vault     *(Hesla a proměnné chráněné Vaultem)*
+- provision.sh
+- README.md
+
+![Struktura složek](screenshots/project-structure.png)
+*Struktura projektu v Codespace*
+
+5. Spuštění projektu
 ---
 ## Spuštění projektu
 1. **Volitelné: Klonování repozitáře**
@@ -54,11 +84,19 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
    ./provision.sh
    ```
 4. Po spuštění zadejte heslo k Vaultu při výzvě.
-5. Ověř funkčnost webserveru: 
+5. Ověř, že NGINX běží:
+    ```bash
+    curl http://localhost
+    ```
+6. Otevři veřejnou URL (např. v Codespace): https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev
+7. Ověř funkčnost webserveru: 
 Otevřete v prohlížeči `http://localhost` nebo příslušnou IP adresu — měla by se zobrazit stránka s textem:
-Hello from GitHub!
-This file was uploaded by Michaela for Ansible testing.
+   <h1>Hello from Ansible-managed NGINX!</h1>
+   <p>Server configured automatically by michaela using Ansible</p>
+*Tento text musí být obsažen ve výstupu, aby validace proběhla úspěšně.*
 
+
+6. Ansible Vault – bezpečné uchování hesla
 ---
 ## Ansible Vault — Bezpečné uchování hesla
 - Citlivé heslo bylo zašifrováno pomocí `ansible-vault`:
@@ -84,57 +122,66 @@ This file was uploaded by Michaela for Ansible testing.
    - ../group_vars/web/vault
    ```
 
+7. Další bezpečnostní prvky (zabezpečení)
 ---
 ## Další bezpečnostní prvky
-- `fail2ban` je nainstalován a aktivován:
-   ```yaml
-   - name: Enable fail2ban service
-   service:
-      name: fail2ban
-      enabled: true
-   ```
-- SSH je zabezpečeno (např. zakázání root přihlášení)
-- Firewall chrání server a povoluje pouze nezbytné porty (např. 22, 80)
+- SSH je zabezpečeno:
+    - Zakázáno root přihlášení (`PermitRootLogin no`)
+    - Zakázáno heslové přihlášení (`PasswordAuthentication no`)
+    - Ansible spravuje `sshd_config` s `--force-confold` pro bezpečné aktualizace
 
+- Firewall (UFW) chrání server a povoluje pouze nezbytné porty (např. 22, 80):
+    - Povolené porty: `22/tcp`, `80/tcp` (včetně IPv6)
+    - Stav ověříte příkazem:
+        ```bash
+        sudo ufw status
+        ```
+
+- Fail2ban je nainstalován a aktivován:
+    - Automatická ochrana proti `brute-force` útokům
+      ```yaml
+      - name: Enable fail2ban service
+      service:
+         name: fail2ban
+         enabled: true
+      ```
+
+8. Webový server
 ---
-## Struktura projektu
-kořenová složka `ansible-web-wm`:
-- inventory/hosts.ini
-- playbooks/webserver.yml
-- roles/users
-- roles/webserver
-- roles/firewall
-- roles/ssh
-- roles/updates
-- group_vars/web/vault  *(zašifrovaný soubor s heslem)*
-- provision.sh
-- README.md
+## Webový server
+- NGINX:
+    - Instalace přes `apt`
+    - Konfigurace pomocí šablony `nginx.conf.j2`
+    - Root adresář: `/opt/static-sites`
+    - Obsah generován ze šablony `index.html.j2`:
+        ```html
+        <h1>Hello from Ansible-managed NGINX!</h1>
+        ```
 
-![Struktura složek](screenshots/project-structure.png)
-*Struktura projektu v Codespace*
+- Git deploy (volitelně):
+    - Repozitář: `static-web-test`
+    - Klonuje se do `/opt/static-sites`
+    - Přepis `index.html` z šablony zajišťuje validaci
 
+🔹 Ověření a testování
+9. Validace funkčnosti
 ---
-## Bonusové funkce
-- Automatické bezpečnostní aktualizace:
-   ```yaml
-   - name: Enable automatic security updates
-     copy:
-       dest: /etc/apt/apt.conf.d/20auto-upgrades
-   ```
-- Webová aplikace dostupná na portu 80
-- Uživatel webapp vytvořen pomocí hesla z Vaultu
+## Validace funkčnosti
+Role `validation` ověřuje, že webový server odpovídá správně:
+    ```yaml
+    - name: Validate web server response
+    uri:
+        url: http://localhost
+        return_content: yes
+    register: web_response
 
----
-## Stav projektu
-- **Správa uživatelů** — Ano
-- **Vault pro hesla** — Ano
-- **Zabezpečení (firewall, fail2ban, ssh)** — Ano
-- **Automatické aktualizace** — Ano
-- **Webserver** — Ano
-- **Provisioning** — Ano, bez chyb
+    - name: Check that response contains expected text
+    assert:
+        that:
+        - "'Hello from Ansible-managed NGINX!' in web_response.content"
+    ```
 
-> **Živá ukázka:** [Zobrazit projekt na GitHub Pages](https://miska296.github.io/ansible-web-wm/)
-
+10. Testování a ověření funkčnosti
 ---
 ## Testování a ověření funkčnosti
 Po dokončení provisioning proveďte následující kontroly:
@@ -168,17 +215,7 @@ Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v 
 ![Náhled webové stránky](screenshots/web-preview.png)
 *Zobrazená stránka po nasazení NGINX*
 
----
-## Video prezentace projektu
-Ukazuje kompletní běh skriptu `provision.sh`, nasazení webového serveru pomocí Ansible a ověření funkčnosti.
-
-[![Prezentace projektu ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
-
----
-## Související projekt
-Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Miska296/static-web-test), kde byla vytvořena statická webová aplikace pomocí platformy Replit.
-V projektu `ansible-web-wm` byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
-
+11. Řešení problémů
 ---
 ## Řešení problémů
 ### 1. Žádný port nebyl otevřen
@@ -246,6 +283,86 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
      sudo ufw status
      ```
 
+12. Stav projektu
+---
+## Stav projektu
+- **Správa uživatelů** — Ano
+- **Vault pro hesla** — Ano
+- **Zabezpečení (firewall, fail2ban, ssh)** — Ano
+- **Automatické aktualizace** — Ano
+- **Webserver** — Ano
+- **Provisioning** — Ano, bez chyb
+
+> **Živá ukázka:** [Zobrazit projekt na GitHub Pages](https://miska296.github.io/ansible-web-wm/)
+
+🔹 Rozšíření a dokumentace
+13. Bonusové funkce
+---
+## Bonusové funkce
+- Automatické bezpečnostní aktualizace:
+   ```yaml
+   - name: Enable automatic security updates
+     copy:
+       dest: /etc/apt/apt.conf.d/20auto-upgrades
+   ```
+- Webová aplikace dostupná na portu 80
+- Uživatel webapp vytvořen pomocí hesla z Vaultu
+- Ansible Vault: chrání citlivé proměnné (např. hesla)
+- Idempotence: opakované spuštění playbooku nezpůsobí chyby
+- Handlers: restart služeb pouze při změně konfigurace
+- Debug výpisy: pro ladění obsahu `index.html` a odpovědi serveru
+
+14. Nasazení přes Vagrant
+---
+## Nasazení přes Vagrant
+### 📦 Alternativní nasazení: Vagrant
+Projekt lze spustit i lokálně pomocí Vagrantu, což umožňuje testovat provisioning v izolovaném prostředí.
+⚠️ Vagrant nelze spustit v GitHub Codespace. Pro testování použij lokální počítač s nainstalovaným Vagrantem a VirtualBoxem.
+- 🔧 Požadavky
+    - Vagrant
+    - VirtualBox nebo jiný poskytovatel VM
+
+- 📁 Struktura
+V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který definuje virtuální stroj:
+    ```ruby
+    Vagrant.configure("2") do |config|
+        config.vm.box = "ubuntu/jammy64"
+        config.vm.network "private_network", ip: "192.168.56.10"
+        config.vm.provision "shell", path: "./provision.sh"
+    end
+    ```
+
+- 🚀 Spuštění
+1. Inicializuj a spusť VM:
+    ```bash
+    vagrant up
+    ```
+2. Připoj se k VM:
+    ```bash
+    vagrant ssh
+    ```
+3. Ověř webový server:
+    ```bash
+    curl http://localhost
+    ```
+Nebo z hostitelského systému:
+    ```bash
+    curl http://192.168.56.10
+    ```
+4. Zastavení VM:
+    ```bash
+    vagrant halt
+    ```
+5. Smazání VM (volitelně):
+    ```bash
+    vagrant destroy
+    ```
+
+- 🧪 Poznámka
+Vagrant automaticky spouští `provision.sh`, takže není nutné ho spouštět ručně. Výhodou je, že prostředí je čisté a opakovatelné — ideální pro testování idempotence Ansible playbooku.
+
+
+15. Osvědčené postupy
 ---
 ## Osvědčené postupy
 - Používejte `DEBIAN_FRONTEND=noninteractive` pro potlačení interaktivních dotazů při instalaci balíčků.
@@ -257,6 +374,7 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
 - Dokumentujte strukturu projektu, diagram nasazení a výstupy provisioning.
 - Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
 
+16. Budoucí vylepšení
 ---
 ## Budoucí vylepšení
 - Přidání automatizovaného testování pomocí GitHub Actions
@@ -265,6 +383,21 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
 - Implementování logování a monitorování (např. Prometheus, Grafana)
 - Přeložení dokumentace do dalších jazyků
 
+🔹 Kontext a závěr
+17. Související projekt
+---
+## Související projekt
+Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Miska296/static-web-test), kde byla vytvořena statická webová aplikace pomocí platformy Replit.
+V projektu `ansible-web-wm` byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
+
+18. Video prezentace projektu
+---
+## Video prezentace projektu
+Ukazuje kompletní běh skriptu `provision.sh`, nasazení webového serveru pomocí Ansible a ověření funkčnosti.
+
+[![Prezentace projektu ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
+
+19. Autor
 ---
 ## Autor  
 Projekt vypracovala Michaela Kučerová  
@@ -273,6 +406,8 @@ Projekt vypracovala Michaela Kučerová
 **Poslední aktualizace:** September 2025  
 **Build:** OK  
 
+20. Licence
 ---
 ## License  
 Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](LICENSE)
+
