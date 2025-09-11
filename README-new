@@ -88,6 +88,54 @@ Role `validation` ověřuje, že webový server odpovídá správně:
     ```
 
 ---
+## Nasazení přes Vagrant
+### 📦 Alternativní nasazení: Vagrant
+Projekt lze spustit i lokálně pomocí Vagrantu, což umožňuje testovat provisioning v izolovaném prostředí.
+
+- 🔧 Požadavky
+    - Vagrant
+    - VirtualBox nebo jiný poskytovatel VM
+
+- 📁 Struktura
+V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který definuje virtuální stroj:
+    ```ruby
+    Vagrant.configure("2") do |config|
+        config.vm.box = "ubuntu/jammy64"
+        config.vm.network "private_network", ip: "192.168.56.10"
+        config.vm.provision "shell", path: "./provision.sh"
+    end
+    ```
+
+- 🚀 Spuštění
+1. Inicializuj a spusť VM:
+    ```bash
+    vagrant up
+    ```
+2. Připoj se k VM:
+    ```bash
+    vagrant ssh
+    ```
+3. Ověř webový server:
+    ```bash
+    curl http://localhost
+    ```
+Nebo z hostitelského systému:
+    ```bash
+    curl http://192.168.56.10
+    ```
+4. Zastavení VM:
+    ```bash
+    vagrant halt
+    ```
+5. Smazání VM (volitelně):
+    ```bash
+    vagrant destroy
+    ```
+
+- 🧪 Poznámka
+Vagrant automaticky spouští `provision.sh`, takže není nutné ho spouštět ručně. Výhodou je, že prostředí je čisté a opakovatelné — ideální pro testování idempotence Ansible playbooku.
+
+---
 ## 🧠 Bonusové body
 - 🔐 Ansible Vault: chrání citlivé proměnné (např. hesla)
 - 🔁 Idempotence: opakované spuštění playbooku nezpůsobí chyby
