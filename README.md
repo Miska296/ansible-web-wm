@@ -43,7 +43,7 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 # Nasazení a konfigurace
 ## 4. Struktura projektu
 kořenová složka `ansible-web-wm/`:
-- inventory/hosts.ini      *(Definice cílového hostitele)*
+- inventory/hosts.ini      *(Definice cílového hostitele)*  
 
 - playbooks/webserver.yml  *(Hlavní playbook)*
 
@@ -63,7 +63,7 @@ kořenová složka `ansible-web-wm/`:
 
 ---
 ## 5. Spuštění projektu
-1. **Volitelné: Klonování repozitáře**
+1. **Volitelné: Klonování repozitáře**  
    Pokud ještě nemáte repozitář stažený:
    ```bash
    git clone https://github.com/Miska296/ansible-web-wm.git
@@ -91,10 +91,8 @@ Otevřete v prohlížeči `http://localhost` nebo veřejnou URL — měla by se 
    ```
 *Tento text musí být obsažen ve výstupu, aby validace proběhla úspěšně.*
 
-
-6. Ansible Vault – bezpečné uchování hesla
 ---
-## Ansible Vault — Bezpečné uchování hesla
+## 6. Ansible Vault – Bezpečné uchování hesla
 - Citlivé heslo bylo zašifrováno pomocí `ansible-vault`:
    ```bash
    ansible-vault encrypt group_vars/web/vault
@@ -118,23 +116,22 @@ Otevřete v prohlížeči `http://localhost` nebo veřejnou URL — měla by se 
    - ../group_vars/web/vault
    ```
 
-7. Další bezpečnostní prvky (zabezpečení)
 ---
-## Další bezpečnostní prvky
-- SSH je zabezpečeno:
-    - Zakázáno root přihlášení (`PermitRootLogin no`)
-    - Zakázáno heslové přihlášení (`PasswordAuthentication no`)
-    - Ansible spravuje `sshd_config` s `--force-confold` pro bezpečné aktualizace
+## 7. Další bezpečnostní prvky
+- SSH zabezpečení:
+   - Zakázáno root přihlášení (`PermitRootLogin no`)
+   - Zakázáno heslové přihlášení (`PasswordAuthentication no`)
+   - Ansible spravuje `sshd_config` s `--force-confold` pro bezpečné aktualizace
 
-- Firewall (UFW) chrání server a povoluje pouze nezbytné porty (např. 22, 80):
-    - Povolené porty: `22/tcp`, `80/tcp` (včetně IPv6)
-    - Stav ověříte příkazem:
-        ```bash
-        sudo ufw status
-        ```
+- Firewall (UFW) chrání server a povoluje pouze nezbytné porty:
+   - Povolené porty: `22/tcp`, `80/tcp` (včetně IPv6)
+   - Stav ověříte příkazem:
+      ```bash
+      sudo ufw status
+      ```
 
 - Fail2ban je nainstalován a aktivován:
-    - Automatická ochrana proti `brute-force` útokům
+   - Automatická ochrana proti `brute-force` útokům
       ```yaml
       - name: Enable fail2ban service
       service:
@@ -142,44 +139,42 @@ Otevřete v prohlížeči `http://localhost` nebo veřejnou URL — měla by se 
          enabled: true
       ```
 
-8. Webový server
 ---
-## Webový server
+## 8. Webový server
 - NGINX:
-    - Instalace přes `apt`
-    - Konfigurace pomocí šablony `nginx.conf.j2`
-    - Root adresář: `/opt/static-sites`
-    - Obsah generován ze šablony `index.html.j2`:
-        ```html
-        <h1>Hello from Ansible-managed NGINX!</h1>
-        ```
+   - Instalace přes `apt`
+   - Konfigurace pomocí šablony `nginx.conf.j2`
+   - Root adresář: `/opt/static-sites`
+   - Obsah generován ze šablony `index.html.j2`:
+      ```html
+      <h1>Hello from Ansible-managed NGINX!</h1>
+      <p>Server configured automatically by michaela using Ansible</p>
+      ```
 
 - Git deploy (volitelně):
-    - Repozitář: `static-web-test`
-    - Klonuje se do `/opt/static-sites`
-    - Přepis `index.html` z šablony zajišťuje validaci
+   - Repozitář: `static-web-test`
+   - Klonuje se do `/opt/static-sites`
+   - Přepis `index.html` z šablony zajišťuje validaci
 
-🔹 Ověření a testování
-9. Validace funkčnosti
 ---
-## Validace funkčnosti
-Role `validation` ověřuje, že webový server odpovídá správně:
-    ```yaml
-    - name: Validate web server response
-    uri:
-        url: http://localhost
-        return_content: yes
-    register: web_response
+# Ověření a testování
+## 9. Validace funkčnosti
+Role `validation` ověřuje, že webový server odpovídá správně:  
+   ```yaml  
+    - name: Validate web server response  
+      uri:  
+         url: http://localhost  
+         return_content: yes  
+      register: web_response  
 
     - name: Check that response contains expected text
-    assert:
-        that:
-        - "'Hello from Ansible-managed NGINX!' in web_response.content"
-    ```
+      assert:
+         that:
+         - "'Hello from Ansible-managed NGINX!' in web_response.content"
+   ```
 
-10. Testování a ověření funkčnosti
 ---
-## Testování a ověření funkčnosti
+## 10. Testování a ověření funkčnosti
 Po dokončení provisioning proveďte následující kontroly:
 - **Webserver běží:**
    ```bash
