@@ -91,7 +91,7 @@ Role `validation` ověřuje, že webový server odpovídá správně:
 ## Nasazení přes Vagrant
 ### 📦 Alternativní nasazení: Vagrant
 Projekt lze spustit i lokálně pomocí Vagrantu, což umožňuje testovat provisioning v izolovaném prostředí.
-
+⚠️ Vagrant nelze spustit v GitHub Codespace. Pro testování použij lokální počítač s nainstalovaným Vagrantem a VirtualBoxem.
 - 🔧 Požadavky
     - Vagrant
     - VirtualBox nebo jiný poskytovatel VM
