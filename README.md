@@ -6,25 +6,23 @@
 ![GitHub Pages](https://img.shields.io/badge/GitHub--Pages-Live-green)
 
 Automatizované nasazení a zabezpečení webového serveru pomocí Ansible v prostředí GitHub Codespace. Projekt zahrnuje konfiguraci SSH, firewallu, aktualizací systému, nasazení statického webu a validaci funkčnosti.
-- Tento projekt je dostupný také v anglické verzi: [README-en.md](README-en.md)
+> Tento projekt je dostupný také v anglické verzi: [README-en.md](README-en.md)
 
-🔹 Úvodní část
-1. Informace o projektu
 ---
-## Informace o projektu
+# Úvodní část
+## 1. Informace o projektu
 Tento projekt slouží k automatizované instalaci a konfiguraci webového serveru pomocí Ansible. Obsahuje:
 - Role pro Nginx, Fail2ban, firewall, SSH a automatické aktualizace
 - Použití `ansible-vault` pro bezpečné uchování hesel
-- Playbooky a skript `provision.sh` pro snadné nasazení
+- Playbooky a skript `provision.sh` pro snadné nasazení 
+
 Projekt vychází z [static-web-test](https://github.com/Miska296/static-web-test), vytvořeného v prostředí Replit, a byl výrazně rozšířen o bezpečnostní prvky, automatizaci a systémovou správu.
 **Projekt byl plně otestován — provisioning proběhl bez chyb, všechny služby byly úspěšně ověřeny.**
 
 ![Schéma nasazení](deployment-diagram.png)
 
-
-2. Projekt: Ansible Web Server ansible-web-wm
 ---
-## Projekt: Ansible Web Server `ansible-web-wm`
+## 2. Projekt: Ansible Web Server `ansible-web-wm`
 Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 - bezpečnostní konfiguraci (`firewall`, `fail2ban`, `ssh`)
 - automatické aktualizace systému
@@ -32,10 +30,8 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 - nasazení jednoduchého webserveru
 - použití `ansible-vault` pro šifrování citlivých údajů
 
-
-3. Požadavky na prostředí
 ---
-## Požadavky na prostředí
+## 3. Požadavky na prostředí
 - Python 3.8+
 - Ansible 2.10+
 - Linux server nebo VM s SSH přístupem
@@ -43,12 +39,10 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 - Správně nastavený soubor `inventory/hosts.ini`
 - Nainstalovaný `sudo` (pro běh s `become: true`)
 
-
-🔹 Nasazení a konfigurace
-4. Struktura projektu
 ---
-## Struktura projektu
-kořenová složka `ansible-web-wm`:
+# Nasazení a konfigurace
+## 4. Struktura projektu
+kořenová složka `ansible-web-wm/`:
 - inventory/hosts.ini      *(Definice cílového hostitele)*
 
 - playbooks/webserver.yml  *(Hlavní playbook)*
@@ -60,15 +54,15 @@ kořenová složka `ansible-web-wm`:
 - roles/webserver          *(Instalace a konfigurace NGINX)*
 - roles/validation         *(Ověření funkčnosti webu)*
 - group_vars/web/vault     *(Hesla a proměnné chráněné Vaultem)*
+
 - provision.sh
 - README.md
 
 ![Struktura složek](screenshots/project-structure.png)
 *Struktura projektu v Codespace*
 
-5. Spuštění projektu
 ---
-## Spuštění projektu
+## 5. Spuštění projektu
 1. **Volitelné: Klonování repozitáře**
    Pokud ještě nemáte repozitář stažený:
    ```bash
@@ -84,15 +78,17 @@ kořenová složka `ansible-web-wm`:
    ./provision.sh
    ```
 4. Po spuštění zadejte heslo k Vaultu při výzvě.
-5. Ověř, že NGINX běží:
+5. Ověřte, že NGINX běží:
     ```bash
     curl http://localhost
     ```
-6. Otevři veřejnou URL (např. v Codespace): https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev
-7. Ověř funkčnost webserveru: 
-Otevřete v prohlížeči `http://localhost` nebo příslušnou IP adresu — měla by se zobrazit stránka s textem:
+6. Otevřete veřejnou URL (např. v Codespace): https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev
+7. Ověřte funkčnost webserveru:  
+Otevřete v prohlížeči `http://localhost` nebo veřejnou URL — měla by se zobrazit stránka s následujícím obsahem:
+   ```html
    <h1>Hello from Ansible-managed NGINX!</h1>
    <p>Server configured automatically by michaela using Ansible</p>
+   ```
 *Tento text musí být obsažen ve výstupu, aby validace proběhla úspěšně.*
 
 
