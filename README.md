@@ -159,7 +159,8 @@ Otevřete v prohlížeči `http://localhost` nebo veřejnou URL — měla by se 
 ---
 # Ověření a testování
 ## 9. Validace funkčnosti
-Role `validation` ověřuje, že webový server odpovídá správně:  
+Role `validation` ověřuje, že webový server odpovídá správně. Na konci hlavního playbooku se provádí HTTP test pomocí modulu `uri`, který ověřuje, zda stránka obsahuje očekávaný text:
+  
    ```yaml  
     - name: Validate web server response  
       uri:  
@@ -206,9 +207,10 @@ Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v 
 ![Náhled webové stránky](screenshots/web-preview.png)
 *Zobrazená stránka po nasazení NGINX*
 
-11. Řešení problémů
 ---
-## Řešení problémů
+## 11. Řešení problémů
+Tato sekce obsahuje nejčastější chyby, které mohou nastat při nasazení projektu, a jejich řešení. Doporučuji ji projít, pokud provisioning proběhl bez chyb, ale výsledek není podle očekávání.
+
 ### 1. Žádný port nebyl otevřen
 Pokud po provisioning nejsou otevřené porty 22 (SSH) nebo 80 (HTTP), zkontrolujte následující:
 1. **Firewall (UFW)**  
@@ -274,46 +276,49 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
      sudo ufw status
      ```
 
-12. Stav projektu
 ---
-## Stav projektu
+## 12. Stav projektu
 - **Správa uživatelů** — Ano
 - **Vault pro hesla** — Ano
-- **Zabezpečení (firewall, fail2ban, ssh)** — Ano
-- **Automatické aktualizace** — Ano
-- **Webserver** — Ano
-- **Provisioning** — Ano, bez chyb
+- **Zabezpečení (SSH, firewall, Fail2ban)** — Ano
+- **Automatické aktualizace systému** — Ano
+- **Webserver (NGINX + Git deploy)** — Ano
+- **Validace funkčnosti** — Ano
+- **Provisioning skript** — Ano, bez chyb
+- **Nasazení přes Vagrant** — Ano
 
 > **Živá ukázka:** [Zobrazit projekt na GitHub Pages](https://miska296.github.io/ansible-web-wm/)
 
-🔹 Rozšíření a dokumentace
-13. Bonusové funkce
 ---
-## Bonusové funkce
+# Rozšíření a dokumentace
+## 13. Bonusové funkce
+Projekt obsahuje několik pokročilých funkcí, které zvyšují bezpečnost, spolehlivost a přehlednost nasazení:
+
 - Automatické bezpečnostní aktualizace:
    ```yaml
    - name: Enable automatic security updates
      copy:
        dest: /etc/apt/apt.conf.d/20auto-upgrades
    ```
-- Webová aplikace dostupná na portu 80
-- Uživatel webapp vytvořen pomocí hesla z Vaultu
+- Webová aplikace dostupná na portu `80`
+- Uživatel `webapp` vytvořen pomocí hesla z Vaultu
 - Ansible Vault: chrání citlivé proměnné (např. hesla)
 - Idempotence: opakované spuštění playbooku nezpůsobí chyby
 - Handlers: restart služeb pouze při změně konfigurace
 - Debug výpisy: pro ladění obsahu `index.html` a odpovědi serveru
 
-14. Nasazení přes Vagrant
 ---
-## Nasazení přes Vagrant
-### 📦 Alternativní nasazení: Vagrant
+## 14. Nasazení přes Vagrant
+### Alternativní nasazení: Vagrant
 Projekt lze spustit i lokálně pomocí Vagrantu, což umožňuje testovat provisioning v izolovaném prostředí.
-⚠️ Vagrant nelze spustit v GitHub Codespace. Pro testování použij lokální počítač s nainstalovaným Vagrantem a VirtualBoxem.
-- 🔧 Požadavky
-    - Vagrant
-    - VirtualBox nebo jiný poskytovatel VM
+> Soubor `Vagrantfile` je již součástí projektu a připraven k použití.  
 
-- 📁 Struktura
+⚠️ Vagrant nelze spustit v GitHub Codespace. Pro testování použij lokální počítač s nainstalovaným Vagrantem a VirtualBoxem.
+- Požadavky:
+   - Vagrant
+   - VirtualBox nebo jiný poskytovatel VM
+
+- Struktura:  
 V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který definuje virtuální stroj:
     ```ruby
     Vagrant.configure("2") do |config|
@@ -323,33 +328,33 @@ V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který defi
     end
     ```
 
-- 🚀 Spuštění
-1. Inicializuj a spusť VM:
-    ```bash
-    vagrant up
-    ```
-2. Připoj se k VM:
-    ```bash
-    vagrant ssh
-    ```
-3. Ověř webový server:
-    ```bash
-    curl http://localhost
-    ```
-Nebo z hostitelského systému:
-    ```bash
-    curl http://192.168.56.10
-    ```
-4. Zastavení VM:
-    ```bash
-    vagrant halt
-    ```
-5. Smazání VM (volitelně):
-    ```bash
-    vagrant destroy
-    ```
+- Spuštění:
+   1. Inicializuj a spusť VM:
+      ```bash
+      vagrant up
+      ```
+   2. Připoj se k VM:
+      ```bash
+      vagrant ssh
+      ```
+   3. Ověř webový server:
+      ```bash
+      curl http://localhost
+      ```
+      Nebo z hostitelského systému:  
+      ```bash  
+      curl http://192.168.56.10  
+      ```  
+   4. Zastavení VM:  
+      ```bash
+      vagrant halt
+      ```  
+   5. Smazání VM (volitelně):  
+      ```bash
+      vagrant destroy
+      ```
 
-- 🧪 Poznámka
+- Poznámka:  
 Vagrant automaticky spouští `provision.sh`, takže není nutné ho spouštět ručně. Výhodou je, že prostředí je čisté a opakovatelné — ideální pro testování idempotence Ansible playbooku.
 
 
