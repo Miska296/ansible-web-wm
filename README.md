@@ -192,14 +192,14 @@ Po dokončení provisioning proveďte následující kontroly:
    ```bash
    fail2ban-client status
    ```
-- Ansible playbook proběhl bez chyb:
+- Ansible playbook proběhl bez chyb:  
 Sledujte výstup v terminálu – `failed=0` potvrzuje úspěch
 
 ![Výstup provisioning](screenshots/provisioning-output.png)
 *Úspěšné dokončení provisioning (`failed=0`)*
 
 Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v GitHub Codespace:  
-[glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev](https://glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev/)
+[fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev](https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev/)
 
 > **Upozornění:** Veřejná URL funguje až po úspěšném provisioning a zveřejnění portu 80 v Codespace.
 
