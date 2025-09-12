@@ -9,6 +9,7 @@ Automatizované nasazení a zabezpečení webového serveru pomocí Ansible v pr
 > Tento projekt je dostupný také v anglické verzi: [README-en.md](README-en.md)
 
 ---
+---
 # Úvodní část
 ## 1. Informace o projektu
 Tento projekt slouží k automatizované instalaci a konfiguraci webového serveru pomocí Ansible. Obsahuje:
@@ -39,6 +40,7 @@ Komplexní automatizace Linux serveru pomocí **Ansible**, zaměřená na:
 - Správně nastavený soubor `inventory/hosts.ini`
 - Nainstalovaný `sudo` (pro běh s `become: true`)
 
+---
 ---
 # Nasazení a konfigurace
 ## 4. Struktura projektu
@@ -157,6 +159,7 @@ Otevřete v prohlížeči `http://localhost` nebo veřejnou URL — měla by se 
    - Přepis `index.html` z šablony zajišťuje validaci
 
 ---
+---
 # Ověření a testování
 ## 9. Validace funkčnosti
 Role `validation` ověřuje, že webový server odpovídá správně. Na konci hlavního playbooku se provádí HTTP test pomocí modulu `uri`, který ověřuje, zda stránka obsahuje očekávaný text:
@@ -230,7 +233,9 @@ Pokud nejsou porty 22 nebo 80 viditelné v záložce „Ports“:
 1. Otevřete záložku **Ports** v Codespace
 2. Klikněte na **„Add port“**
 3. Zadejte `80` a zaškrtněte **„Public“**
-4. Po uložení se zobrazí veřejná URL, např. `https://username-repo-80.app.github.dev`
+4. Po uložení se zobrazí veřejná URL, např.  
+`https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev/`  
+> *Poznámka: URL se generuje automaticky podle názvu Codespace. Váš odkaz bude mít jiný tvar.*
 5. Otevřete ji v prohlížeči a ověřte, že se stránka načte
 6. Ověřte, že NGINX naslouchá na všech rozhraních (`listen 80`, `listen [::]:80`)
 
@@ -269,9 +274,9 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
      service nginx restart
      ```
 3. **Zveřejnění portu**
-   - V Codespace ručně přidejte port 80 v záložce „Ports“ a nastavte ho jako „Public“.
+   - V Codespace ručně přidejte port `80` v záložce „Ports“ a nastavte ho jako „Public“.
 4. **Firewall**
-   - Ověřte, že porty 22 a 80 jsou povolené:
+   - Ověřte, že porty `22` a `80` jsou povolené:
      ```bash
      sudo ufw status
      ```
@@ -289,6 +294,7 @@ Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), 
 
 > **Živá ukázka:** [Zobrazit projekt na GitHub Pages](https://miska296.github.io/ansible-web-wm/)
 
+---
 ---
 # Rozšíření a dokumentace
 ## 13. Bonusové funkce
@@ -314,6 +320,7 @@ Projekt lze spustit i lokálně pomocí Vagrantu, což umožňuje testovat provi
 > Soubor `Vagrantfile` je již součástí projektu a připraven k použití.  
 
 ⚠️ Vagrant nelze spustit v GitHub Codespace. Pro testování použij lokální počítač s nainstalovaným Vagrantem a VirtualBoxem.
+
 - Požadavky:
    - Vagrant
    - VirtualBox nebo jiný poskytovatel VM
@@ -357,10 +364,10 @@ V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který defi
 - Poznámka:  
 Vagrant automaticky spouští `provision.sh`, takže není nutné ho spouštět ručně. Výhodou je, že prostředí je čisté a opakovatelné — ideální pro testování idempotence Ansible playbooku.
 
-
-15. Osvědčené postupy
 ---
-## Osvědčené postupy
+## 15. Osvědčené postupy
+Doporučení pro správu projektu, konfiguraci služeb a udržení čisté struktury:
+
 - Používejte `DEBIAN_FRONTEND=noninteractive` pro potlačení interaktivních dotazů při instalaci balíčků.
 - Využívejte `ansible-vault` pro bezpečné uchování citlivých údajů.
 - Po každém provisioning ověřte stav služeb (`nginx`, `fail2ban`, `ssh`) a otevřené porty.
@@ -370,40 +377,36 @@ Vagrant automaticky spouští `provision.sh`, takže není nutné ho spouštět 
 - Dokumentujte strukturu projektu, diagram nasazení a výstupy provisioning.
 - Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
 
-16. Budoucí vylepšení
 ---
-## Budoucí vylepšení
+## 16. Budoucí vylepšení
 - Přidání automatizovaného testování pomocí GitHub Actions
 - Vytvoření dynamického webového rozhraní pro provisioning
 - Přidání podpory pro nasazení na bázi Dockeru
 - Implementování logování a monitorování (např. Prometheus, Grafana)
 - Přeložení dokumentace do dalších jazyků
+> Tato sekce slouží jako roadmapa pro další vývoj projektu.
 
-🔹 Kontext a závěr
-17. Související projekt
 ---
-## Související projekt
+---
+# Kontext a závěr
+## 17. Související projekt
 Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Miska296/static-web-test), kde byla vytvořena statická webová aplikace pomocí platformy Replit.
 V projektu `ansible-web-wm` byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
 
-18. Video prezentace projektu
 ---
-## Video prezentace projektu
+## 18. Video prezentace projektu
 Ukazuje kompletní běh skriptu `provision.sh`, nasazení webového serveru pomocí Ansible a ověření funkčnosti.
 
 [![Prezentace projektu ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
 
-19. Autor
 ---
-## Autor  
-Projekt vypracovala Michaela Kučerová  
+## 19. Autor
+Projekt vypracovala [Michaela Kučerová](https://github.com/Miska296)  
 **Verze:** 1.0  
 **Datum:** červenec 2025  
 **Poslední aktualizace:** September 2025  
-**Build:** OK  
+**Build:** OK
 
-20. Licence
 ---
-## License  
-Tento projekt je dostupný pod licencí MIT. Viz soubor [LICENSE](LICENSE)
-
+## 20. Licence
+Tento projekt je dostupný pod licencí MIT. Podrobnosti viz soubor [LICENSE](LICENSE).
