@@ -198,106 +198,106 @@ After completing the provisioning, please perform the following checks:
    fail2ban-client status
    ```
 - Ansible playbook ran without errors: 
-Sledujte výstup v terminálu – `failed=0` potvrzuje úspěch
+Watch the output in the terminal – `failed=0` confirms success.
 
-![Výstup provisioning](screenshots/provisioning-output.png)
-*Úspěšné dokončení provisioning (`failed=0`)*
+![Provisioning output](screenshots/provisioning-output.png)
+*Successful completion of provisioning (`failed=0`)*
 
-Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v GitHub Codespace:  
+The webpage has been successfully deployed and is available at the public address in GitHub Codespace:  
 [fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev](https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev/)
 
-> **Upozornění:** Veřejná URL funguje až po úspěšném provisioning a zveřejnění portu 80 v Codespace.
+> **Notice:** The public URL works only after successful provisioning and the publishing of port 80 in the Codespace.
 
-![Náhled webové stránky](screenshots/web-preview.png)
-*Zobrazená stránka po nasazení NGINX*
+![Preview of the webpage](screenshots/web-preview.png)
+*The displayed page after deploying NGINX*
 
 ---
-## 11. Řešení problémů
-Tato sekce obsahuje nejčastější chyby, které mohou nastat při nasazení projektu, a jejich řešení. Doporučuji ji projít, pokud provisioning proběhl bez chyb, ale výsledek není podle očekávání.
+## 11. Problem solving (troubleshooting)
+This section contains the most common errors that may occur during the deployment of a project and their solutions. I recommend going through it if the provisioning was completed without errors, but the result is not as expected.
 
-### 1. Žádný port nebyl otevřen
-Pokud po provisioning nejsou otevřené porty 22 (SSH) nebo 80 (HTTP), zkontrolujte následující:
+### 1. No port was opened
+If ports 22 (SSH) or 80 (HTTP) are not open after provisioning, please check the following:
 1. **Firewall (UFW)**  
-   Ověřte stav firewallu:
+   Check the status of the firewall:
    ```bash
    sudo ufw status
    ```
-- Pokud je aktivní, povolte potřebné porty:
+- If active, enable the necessary ports:
    ```bash
    sudo ufw allow 22
    sudo ufw allow 80
    sudo ufw reload
    ```
 
-### 2. Porty nejsou dostupné v Codespace
-Pokud nejsou porty 22 nebo 80 viditelné v záložce „Ports“:
-1. Otevřete záložku **Ports** v Codespace
-2. Klikněte na **„Add port“**
-3. Zadejte `80` a zaškrtněte **„Public“**
-4. Po uložení se zobrazí veřejná URL, např.  
+### 2. Ports are not available in Codespace.
+If ports 22 or 80 are not visible in the 'Ports' tab:
+1. Open the **Ports** tab in Codespace
+2. Click on **"Add port"**
+3. Enter `80` and check **"Public"**
+4. After saving, a public URL will be displayed, for example:  
 `https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev/`  
-> *Poznámka: URL se generuje automaticky podle názvu Codespace. Váš odkaz bude mít jiný tvar.*
-5. Otevřete ji v prohlížeči a ověřte, že se stránka načte
-6. Ověřte, že NGINX naslouchá na všech rozhraních (`listen 80`, `listen [::]:80`)
+> *Note: The URL is generated automatically based on the name of the Codespace. Your link will have a different format.*
+5. Open it in the browser and verify that the page loads
+6. Verify that NGINX is listening on all interfaces (`listen 80`, `listen [::]:80`)
 
-### 3. NGINX běží, ale není dostupný
-   Ověřte stav služby:
+### 3. NGINX is running, but is not accessible
+   Check the service status:
    ```bash
    systemctl status nginx
    ```
-   Zkontrolujte, zda naslouchá na portu 80:
+   Check if it is listening on port 80:
    ```bash
    ss -tuln | grep :80
    ```
 
-### 4. SSH přístup omezený
-Pokud jste zakázali přihlášení pomocí hesla nebo root uživatele, ujistěte se, že máte správně nastavený SSH klíč v `sshd_config`.
+### 4. SSH access restricted
+If you have disabled password login or root user, make sure you have the SSH key correctly set up in `sshd_config`.
 
-### 5. Provisioning proběhl, ale změny se neprojevily
-   Zkuste provisioning spustit znovu:
+### 5. Provisioning was completed, but the changes did not take effect
+   Try to run the provisioning again:
    ```bash
    ./provision.sh
    ```
 
-### 6. Web není dostupný zvenčí
-Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), zkontrolujte:
-1. **Konfiguraci NGINX**
-   - Ujistěte se, že v šabloně `nginx.conf.j2` je:
+### 6. The web is not accessible from the outside
+If the webpage is not displaying through a public URL (e.g., in Codespace), check:
+1. **NGINX configuration**
+   - Make sure that in the template `nginx.conf.j2` there is:
      ```nginx
      server_name _;
      listen 80;
      listen [::]:80;
      ```
-   - Tím zajistíte, že server naslouchá na všech rozhraních a není omezen na `localhost`.
-2. **Restart služby**
-   - V prostředí bez `systemd` použijte:
+   - This ensures that the server listens on all interfaces and is not limited to `localhost`.
+2. **Restart the service**
+   - In an environment without `systemd`, use:
      ```bash
      service nginx restart
      ```
-3. **Zveřejnění portu**
-   - V Codespace ručně přidejte port `80` v záložce „Ports“ a nastavte ho jako „Public“.
+3. **Port publishing**
+   - Manually add port `80` in the tab in Codespace „Ports“ and set it as „Public“.
 4. **Firewall**
-   - Ověřte, že porty `22` a `80` jsou povolené:
+   - Verify that ports `22` and `80` are enabled:
      ```bash
      sudo ufw status
      ```
 
 ---
-## 12. Stav projektu
-- **Správa uživatelů** — Ano
-- **Vault pro hesla** — Ano
-- **Zabezpečení (SSH, firewall, Fail2ban)** — Ano
-- **Automatické aktualizace systému** — Ano
-- **Webserver (NGINX + Git deploy)** — Ano
-- **Validace funkčnosti** — Ano
-- **Provisioning skript** — Ano, bez chyb
-- **Nasazení přes Vagrant** — Ano
+## 12. Project status
+- **User management** — Yes
+- **Password vault** — Yes
+- **Security (SSH, firewall, Fail2ban)** — Yes
+- **Automatic system updates** — Yes
+- **Webserver (NGINX + Git deploy)** — Yes
+- **Functionality validation** — Yes
+- **Provisioning script** — Yes, without mistakes
+- **Deployment via Vagrant** — Yes
 
-> **Živá ukázka:** [Zobrazit projekt na GitHub Pages](https://miska296.github.io/ansible-web-wm/)
+> **Live demonstration:** [View project on GitHub Pages](https://miska296.github.io/ansible-web-wm/)
 
 ---
 ---
-# Rozšíření a dokumentace
+# Extension and documentation
 ## 13. Bonusové funkce
 Projekt obsahuje několik pokročilých funkcí, které zvyšují bezpečnost, spolehlivost a přehlednost nasazení:
 
