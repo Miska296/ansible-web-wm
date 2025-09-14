@@ -100,11 +100,11 @@ Open in the browser `http://localhost` or a public URL - a page with the followi
    ```bash
    ansible-vault encrypt group_vars/web/vault
    ```
-- Proměnná:
+- Variable:
    ```yaml
    webapp_password: "tajneheslo123"
    ```
-- Použita v roli `users`:
+- Used in the role `users`:
    ```yaml
    - name: Create dedicated user webapp with password from Vault
    user:
@@ -113,28 +113,28 @@ Open in the browser `http://localhost` or a public URL - a page with the followi
       shell: /bin/bash
       state: present
    ```
-- Vault je výslovně načten v playbooku:
+- Vault is explicitly loaded in the playbook:
    ```yaml
    vars_files:
    - ../group_vars/web/vault
    ```
 
 ---
-## 7. Další bezpečnostní prvky
-- SSH zabezpečení:
-   - Zakázáno root přihlášení (`PermitRootLogin no`)
-   - Zakázáno heslové přihlášení (`PasswordAuthentication no`)
-   - Ansible spravuje `sshd_config` s `--force-confold` pro bezpečné aktualizace
+## 7. Additional safety features
+- SSH security:
+   - Root login prohibited (`PermitRootLogin no`)
+   - Password login is prohibited (`PasswordAuthentication no`)
+   - Ansible manages `sshd_config` with `--force-confold` for safe updates.
 
-- Firewall (UFW) chrání server a povoluje pouze nezbytné porty:
-   - Povolené porty: `22/tcp`, `80/tcp` (včetně IPv6)
-   - Stav ověříte příkazem:
+- Firewall (UFW) protects the server and only allows necessary ports:
+   - Allowed ports: `22/tcp`, `80/tcp` (including IPv6)
+   - You can verify the status with the command:
       ```bash
       sudo ufw status
       ```
 
-- Fail2ban je nainstalován a aktivován:
-   - Automatická ochrana proti `brute-force` útokům
+- Fail2ban is installed and activated:
+   - Automatic protection against `brute-force` attacks
       ```yaml
       - name: Enable fail2ban service
       service:
@@ -143,27 +143,27 @@ Open in the browser `http://localhost` or a public URL - a page with the followi
       ```
 
 ---
-## 8. Webový server
+## 8. Web server
 - NGINX:
-   - Instalace přes `apt`
-   - Konfigurace pomocí šablony `nginx.conf.j2`
-   - Root adresář: `/opt/static-sites`
-   - Obsah generován ze šablony `index.html.j2`:
+   - Installation via `apt`
+   - Configuration using the template `nginx.conf.j2`
+   - Root directory: `/opt/static-sites`
+   - Content generated from the template `index.html.j2`:
       ```html
       <h1>Hello from Ansible-managed NGINX!</h1>
       <p>Server configured automatically by michaela using Ansible</p>
       ```
 
-- Git deploy (volitelně):
-   - Repozitář: `static-web-test`
-   - Klonuje se do `/opt/static-sites`
-   - Přepis `index.html` z šablony zajišťuje validaci
+- Git deploy (optional):
+   - Repository: `static-web-test`
+   - It is being cloned to `/opt/static-sites`
+   - The rewriting of `index.html` from the template ensures validation.
 
 ---
 ---
-# Ověření a testování
-## 9. Validace funkčnosti
-Role `validation` ověřuje, že webový server odpovídá správně. Na konci hlavního playbooku se provádí HTTP test pomocí modulu `uri`, který ověřuje, zda stránka obsahuje očekávaný text:
+# Verification and testing
+## 9. Functionality validation
+The `validation` role verifies that the web server responds correctly. At the end of the main playbook, an HTTP test is performed using the `uri` module, which checks whether the page contains the expected text:
   
    ```yaml  
     - name: Validate web server response  
@@ -179,25 +179,25 @@ Role `validation` ověřuje, že webový server odpovídá správně. Na konci h
    ```
 
 ---
-## 10. Testování a ověření funkčnosti
-Po dokončení provisioning proveďte následující kontroly:
-- **Webserver běží:**
+## 10. Testing and verification of functionality
+After completing the provisioning, please perform the following checks:
+- **Web server is running:**
    ```bash
    systemctl status nginx
    ```
-- Porty otevřené:
+- Open ports:
    ```bash
    ss -tuln | grep :80
    ```
-- Firewall neblokuje komunikaci:
+- The firewall does not block communication:
    ```bash
    ufw status
    ```
-- Fail2ban chrání server:
+- Fail2ban protects the server:
    ```bash
    fail2ban-client status
    ```
-- Ansible playbook proběhl bez chyb:  
+- Ansible playbook ran without errors: 
 Sledujte výstup v terminálu – `failed=0` potvrzuje úspěch
 
 ![Výstup provisioning](screenshots/provisioning-output.png)
