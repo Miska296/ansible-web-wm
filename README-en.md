@@ -298,36 +298,36 @@ If the webpage is not displaying through a public URL (e.g., in Codespace), chec
 ---
 ---
 # Extension and documentation
-## 13. Bonusové funkce
-Projekt obsahuje několik pokročilých funkcí, které zvyšují bezpečnost, spolehlivost a přehlednost nasazení:
+## 13. Bonus features
+The project includes several advanced features that enhance the security, reliability, and clarity of the deployment:
 
-- Automatické bezpečnostní aktualizace:
+- Automatic security updates:
    ```yaml
    - name: Enable automatic security updates
      copy:
        dest: /etc/apt/apt.conf.d/20auto-upgrades
    ```
-- Webová aplikace dostupná na portu `80`
-- Uživatel `webapp` vytvořen pomocí hesla z Vaultu
-- Ansible Vault: chrání citlivé proměnné (např. hesla)
-- Idempotence: opakované spuštění playbooku nezpůsobí chyby
-- Handlers: restart služeb pouze při změně konfigurace
-- Debug výpisy: pro ladění obsahu `index.html` a odpovědi serveru
+- Web application available on port `80`
+- User `webapp` created using a password from the Vault
+- Ansible Vault: protects sensitive variables (e.g., passwords)
+- Idempotence: running the playbook repeatedly will not cause errors.
+- Handlers: restart services only when the configuration changes
+- Debug outputs: for debugging the content of `index.html` and the server response
 
 ---
-## 14. Nasazení přes Vagrant
-### 14.1 Alternativní nasazení: Vagrant
-Projekt lze spustit i lokálně pomocí Vagrantu, což umožňuje testovat provisioning v izolovaném prostředí.
-> Soubor `Vagrantfile` je již součástí projektu a připraven k použití.  
+## 14. Deployment via Vagrant
+### 14.1 Alternative deployment: Vagrant
+The project can also be run locally using Vagrant, which allows for testing provisioning in an isolated environment.
+> The `Vagrantfile` is already part of the project and ready for use.  
 
-⚠️ Vagrant nelze spustit v GitHub Codespace. Pro testování použij lokální počítač s nainstalovaným Vagrantem a VirtualBoxem.
+⚠️ Vagrant cannot be run in GitHub Codespace. For testing, use a local computer with Vagrant and VirtualBox installed.
 
-- Požadavky:
+- Requirements:
    - Vagrant
-   - VirtualBox nebo jiný poskytovatel VM
+   - VirtualBox or another VM provider
 
-- Struktura:  
-V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který definuje virtuální stroj:
+- Structure:  
+In the root directory of the project, there is a file `Vagrantfile` that defines the virtual machine:
     ```ruby
     Vagrant.configure("2") do |config|
         config.vm.box = "ubuntu/jammy64"
@@ -336,84 +336,85 @@ V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který defi
     end
     ```
 
-- Spuštění:
-   1. Inicializuj a spusť VM:
+- Launch:
+   1. Initialize and start the VM:
       ```bash
       vagrant up
       ```
-   2. Připoj se k VM:
+   2. Join the VM:
       ```bash
       vagrant ssh
       ```
-   3. Ověř webový server:
+   3. Verify the web server:
       ```bash
       curl http://localhost
       ```
-      Nebo z hostitelského systému:  
+      Or from the host system:  
       ```bash  
       curl http://192.168.56.10  
       ```  
-   4. Zastavení VM:  
+   4. Stopping the VM:  
       ```bash
       vagrant halt
       ```  
-   5. Smazání VM (volitelně):  
+   5. VM deletion (optional):  
       ```bash
       vagrant destroy
       ```
 
-- Poznámka:  
-Vagrant automaticky spouští `provision.sh`, takže není nutné ho spouštět ručně. Výhodou je, že prostředí je čisté a opakovatelné — ideální pro testování idempotence Ansible playbooku.
+- Note:  
+Vagrant automatically runs `provision.sh`, so it's not necessary to run it manually. The advantage is that the environment is clean and repeatable — ideal for testing the idempotence of the Ansible playbook.
 
 ---
-### 14.2 Další informace o testování nasazení přes Vagrant:
-Testování provisioning procesu proběhlo také v samostatném repozitáři [vagrant-nginx-provisioning](https://github.com/Miska296/vagrant-nginx-provisioning), kde byly provedeny drobné úpravy souborů a kódu pro správné fungování v prostředí Vagrant. Tento repozitář slouží jako izolované testovací prostředí, které umožňuje ověřit funkčnost playbooku bez ovlivnění hlavního projektu `ansible-web-wm`.
+### 14.2 More information about deployment testing via Vagrant
+Testing of the provisioning process was also carried out in a separate repository [vagrant-nginx-provisioning](https://github.com/Miska296/vagrant-nginx-provisioning), where minor adjustments to files and code were made for proper functioning in the Vagrant environment. This repository serves as an isolated testing environment that allows verifying the functionality of the playbook without affecting the main project `ansible-web-wm`.  
 
-Provisioning byl následně ověřen i v GitHub Codespace po instalaci Ansible, čímž byla potvrzena kompatibilita obou prostředí.
-
----
-## 15. Osvědčené postupy
-Doporučení pro správu projektu, konfiguraci služeb a udržení čisté struktury:
-
-- Používejte `DEBIAN_FRONTEND=noninteractive` pro potlačení interaktivních dotazů při instalaci balíčků.
-- Využívejte `ansible-vault` pro bezpečné uchování citlivých údajů.
-- Po každém provisioning ověřte stav služeb (`nginx`, `fail2ban`, `ssh`) a otevřené porty.
-- Používejte `server_name _` v konfiguraci NGINX, pokud chcete, aby server reagoval na požadavky z libovolné domény nebo IP adresy. → `server_name localhost` omezuje přístup pouze na místní stroj, což může blokovat přístup v prostředích jako Codespaces nebo při testování zvenčí.
-- Přidejte `listen [::]:80;` pro podporu IPv6, což zvyšuje dostupnost v moderních sítích.
-- Po každé změně konfigurace NGINX spusťte provisioning znovu a ověřte stav služby.
-- Dokumentujte strukturu projektu, diagram nasazení a výstupy provisioning.
-- Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
+Provisioning was subsequently verified in GitHub Codespace after installing Ansible, confirming the compatibility of both environments.
 
 ---
-## 16. Budoucí vylepšení
-- Přidání automatizovaného testování pomocí GitHub Actions
-- Vytvoření dynamického webového rozhraní pro provisioning
-- Přidání podpory pro nasazení na bázi Dockeru
-- Implementování logování a monitorování (např. Prometheus, Grafana)
-- Přeložení dokumentace do dalších jazyků
-> Tato sekce slouží jako roadmapa pro další vývoj projektu.
+## 15. Best practices
+Recommendations for project management, service configuration, and maintaining a clean structure:
+
+- Use `DEBIAN_FRONTEND=noninteractive` to suppress interactive prompts when installing packages.
+- Use `ansible-vault` for the secure storage of sensitive information.
+- After each provisioning, check the status of the services (`nginx`, `fail2ban`, `ssh`) and the open ports.
+- Use `server_name _` in the NGINX configuration if you want the server to respond to requests from any domain or IP address. 
+→ `server_name localhost` limits access to only the local machine, which may block access in environments like Codespaces or when testing from the outside.
+- Add `listen [::]:80;` for IPv6 support, which increases availability in modern networks.
+- After each configuration change in NGINX, run the provisioning again and check the status of the service.
+- Document the project structure, deployment diagram, and provisioning outputs.
+- Keep the repository structure clean — avoid nested folders.
+
+---
+## 16. Future improvements
+- Adding automated testing using GitHub Actions
+- Creating a dynamic web interface for provisioning
+- Adding support for Docker-based deployment
+- Implementing logging and monitoring (e.g. Prometheus, Grafana)
+- Translation of the documentation into other languages
+> This section serves as a roadmap for the further development of the project.
 
 ---
 ---
-# Kontext a závěr
-## 17. Související projekt
-Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Miska296/static-web-test), kde byla vytvořena statická webová aplikace pomocí platformy Replit.
-V projektu `ansible-web-wm` byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
+# Context and conclusion
+## 17. Related project
+This project is based on the original repository [static-web-test](https://github.com/Miska296/static-web-test), where a static web application was created using the Replit platform.
+In the `ansible-web-wm` project, automation, security features, and extensive testing have been added.
 
 ---
-## 18. Video prezentace projektu
-Ukazuje kompletní běh skriptu `provision.sh`, nasazení webového serveru pomocí Ansible a ověření funkčnosti.
+## 18. Video presentation of the project
+It shows the complete run of the script `provision.sh`, deployment of a web server using Ansible, and verification of functionality.
 
-[![Prezentace projektu ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
+[![Presentation of the ansible-web-wm project](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
 
 ---
-## 19. Autor
-Projekt vypracovala [Michaela Kučerová](https://github.com/Miska296)  
-**Verze:** 1.0  
-**Datum:** červenec 2025  
-**Poslední aktualizace:** September 2025  
+## 19. Author
+The project was prepared by [Michaela Kučerová](https://github.com/Miska296)  
+**Version:** 1.0  
+**Date:** July 2025  
+**Last updated:** September 2025  
 **Build:** OK
 
 ---
-## 20. Licence
-Tento projekt je dostupný pod licencí MIT. Podrobnosti viz soubor [LICENSE](LICENSE).
+## 20. License
+This project is available under the MIT license. Details see the file [LICENSE](LICENSE).

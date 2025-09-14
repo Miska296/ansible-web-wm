@@ -410,7 +410,7 @@ Ukazuje kompletní běh skriptu `provision.sh`, nasazení webového serveru pomo
 Projekt vypracovala [Michaela Kučerová](https://github.com/Miska296)  
 **Verze:** 1.0  
 **Datum:** červenec 2025  
-**Poslední aktualizace:** September 2025  
+**Poslední aktualizace:** září 2025  
 **Build:** OK
 
 ---
