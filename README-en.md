@@ -1,51 +1,78 @@
-# ansible-web-wm
+# Ansible Web Server Deployment
 
 ![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Last Updated](https://img.shields.io/badge/last--updated-September%202025-blue)
 ![Build](https://img.shields.io/badge/build-OK-brightgreen)
 ![GitHub Pages](https://img.shields.io/badge/GitHub--Pages-Live-green)
 
-Automated deployment and security of a web server using Ansible
-- This project is also available in the Czech version: [README.md](README.md)
+Automated deployment and securing of a web server using Ansible in a GitHub Codespace environment. The project includes configuration of SSH, firewall, system updates, deployment of a static website, and functionality validation.
+> This project is also available in the Czech version: [README-en.md](README-en.md)
 
 ---
-## Project information
-This project serves for automated installation and configuration of a web server using Ansible. It includes:
-- Roles for Nginx, Fail2ban, firewall, SSH and automatic updates
-- Using `ansible-vault` for the secure storage of passwords
+---
+# Introduction part
+## 1. Information about the project
+This project is used for automated installation and configuration of a web server using Ansible.
+It includes:
+- Roles for Nginx, Fail2ban, firewall, SSH, and automatic updates
+- Usage `ansible-vault` for the secure storage of passwords
 - Playbooks and scripts `provision.sh` for easy deployment
-The project is based on [static-web-test](https://github.com/Miska296/static-web-test), created in the Replit environment, and was significantly enhanced with security features, automation, and system management.
-**The project was fully tested — provisioning was completed without errors, all services were successfully validated.**
+
+The project is based on [static-web-test](https://github.com/Miska296/static-web-test), created in the Replit environment, and has been significantly enhanced with security features, automation, and system management.
+**The project has been fully tested - the provisioning was completed without errors, all services have been successfully verified.**
 
 ![Deployment scheme](deployment-diagram.png)
 
 ---
-## Project: Ansible Web Server `ansible-web-wm`
-Comprehensive automation of Linux servers using **Ansible**, focused on:
+## 2. Project: Ansible Web Server `ansible-web-wm`
+Comprehensive automation of a Linux server using **Ansible**, focused on:
 - security configuration (`firewall`, `fail2ban`, `ssh`)
 - automatic system updates
 - creation of a dedicated user `webapp`
 - deployment of a simple web server
-- using `ansible-vault` for encrypting sensitive data
+- use `ansible-vault` for encrypting sensitive data
 
 ---
-## Requirements for the environment
+## 3. Requirements for the environment
 - Python 3.8+
 - Ansible 2.10+
 - Linux server or VM with SSH access
 - Vault password for encrypted variables
-- Properly configured file `inventory/hosts.ini`
+- Correctly configured file `inventory/hosts.ini`
 - Installed `sudo` (for running with `become: true`)
 
 ---
-## Project launch
-1. **Optional: Cloning the repository**
+---
+# Deployment and configuration
+## 4. Project structure
+root component `ansible-web-wm/`:
+- inventory/hosts.ini      *(Definition of the target host)*  
+
+- playbooks/webserver.yml  *(Main playbook)*
+
+- roles/users              *(Creating users)*
+- roles/ssh                *(SSH configuration)*
+- roles/firewall           *(UFW + fail2ban)*
+- roles/updates            *(System updates)*
+- roles/webserver          *(Installation and configuration of NGINX)*
+- roles/validation         *(Verification of the website's functionality)*
+- group_vars/web/vault     *(Passwords and variables protected by Vault)*
+
+- provision.sh
+- README.md
+
+![Structure of components](screenshots/project-structure.png)
+*Project structure in Codespace*
+
+---
+## 5. Project launch
+1. **Optional: Cloning the repository**  
    If you haven't downloaded the repository yet:
    ```bash
    git clone https://github.com/Miska296/ansible-web-wm.git
    cd ansible-web-wm
    ```
-2. Setting the paths to roles (already prepared in provision.sh):
+2. Setting paths to roles (already prepared in provision.sh):
    ```bash
    export ANSIBLE_ROLES_PATH="./roles"
    ```
@@ -53,23 +80,31 @@ Comprehensive automation of Linux servers using **Ansible**, focused on:
    ```bash
    ./provision.sh
    ```
-4. After launching, enter the password for the Vault when prompted.
-5. Check the functionality of the web server: 
-Open in your browser `http://localhost` or the corresponding IP address — a page with the text should be displayed:
-Hello from GitHub!
-This file was uploaded by Michaela for Ansible testing.
+4. After starting, enter the password for the Vault when prompted.
+5. Check that NGINX is running:
+    ```bash
+    curl http://localhost
+    ```
+6. Open the public URL (e.g., in Codespace): https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev
+7. Check the functionality of the web server:  
+Open in the browser `http://localhost` or a public URL - a page with the following content should be displayed:
+   ```html
+   <h1>Hello from Ansible-managed NGINX!</h1>
+   <p>Server configured automatically by michaela using Ansible</p>
+   ```
+*This text must be included in the output for the validation to be successful.*
 
 ---
-## Ansible Vault — Safe storage of password
-- The sensitive password has been encrypted using `ansible-vault`:
+## 6. Ansible Vault – Secure Storage of Passwords
+- The sensitive password was encrypted using `ansible-vault`:
    ```bash
    ansible-vault encrypt group_vars/web/vault
    ```
-- Variable:
+- Proměnná:
    ```yaml
    webapp_password: "tajneheslo123"
    ```
-- Used in the role of `users`:
+- Použita v roli `users`:
    ```yaml
    - name: Create dedicated user webapp with password from Vault
    user:
@@ -78,206 +113,307 @@ This file was uploaded by Michaela for Ansible testing.
       shell: /bin/bash
       state: present
    ```
-- The vault is explicitly loaded in the playbook:
+- Vault je výslovně načten v playbooku:
    ```yaml
    vars_files:
    - ../group_vars/web/vault
    ```
 
 ---
-## Additional safety features
-- `fail2ban` is installed and activated:
-   ```yaml
-   - name: Enable fail2ban service
-   service:
-      name: fail2ban
-      enabled: true
+## 7. Další bezpečnostní prvky
+- SSH zabezpečení:
+   - Zakázáno root přihlášení (`PermitRootLogin no`)
+   - Zakázáno heslové přihlášení (`PasswordAuthentication no`)
+   - Ansible spravuje `sshd_config` s `--force-confold` pro bezpečné aktualizace
+
+- Firewall (UFW) chrání server a povoluje pouze nezbytné porty:
+   - Povolené porty: `22/tcp`, `80/tcp` (včetně IPv6)
+   - Stav ověříte příkazem:
+      ```bash
+      sudo ufw status
+      ```
+
+- Fail2ban je nainstalován a aktivován:
+   - Automatická ochrana proti `brute-force` útokům
+      ```yaml
+      - name: Enable fail2ban service
+      service:
+         name: fail2ban
+         enabled: true
+      ```
+
+---
+## 8. Webový server
+- NGINX:
+   - Instalace přes `apt`
+   - Konfigurace pomocí šablony `nginx.conf.j2`
+   - Root adresář: `/opt/static-sites`
+   - Obsah generován ze šablony `index.html.j2`:
+      ```html
+      <h1>Hello from Ansible-managed NGINX!</h1>
+      <p>Server configured automatically by michaela using Ansible</p>
+      ```
+
+- Git deploy (volitelně):
+   - Repozitář: `static-web-test`
+   - Klonuje se do `/opt/static-sites`
+   - Přepis `index.html` z šablony zajišťuje validaci
+
+---
+---
+# Ověření a testování
+## 9. Validace funkčnosti
+Role `validation` ověřuje, že webový server odpovídá správně. Na konci hlavního playbooku se provádí HTTP test pomocí modulu `uri`, který ověřuje, zda stránka obsahuje očekávaný text:
+  
+   ```yaml  
+    - name: Validate web server response  
+      uri:  
+         url: http://localhost  
+         return_content: yes  
+      register: web_response  
+
+    - name: Check that response contains expected text
+      assert:
+         that:
+         - "'Hello from Ansible-managed NGINX!' in web_response.content"
    ```
-- SSH is secured (e.g. disabling root login)
-- The firewall protects the server and only allows necessary ports (e.g., 22, 80)
 
 ---
-## Project structure
-Root directory `ansible-web-wm`:
-- inventory/hosts.ini
-- playbooks/webserver.yml
-- roles/users
-- roles/webserver
-- roles/firewall
-- roles/ssh
-- roles/updates
-- group_vars/web/vault *(encrypted file with a password)*
-- provision.sh
-- README.md
-
-![Structure of folders](screenshots/project-structure.png)
-*Project structure in Codespace*
-
-> cz For the Czech version of this documentation, see [README.md](README.md)
-
----
-## Bonus features
-- Automatic security updates:
-   ```yaml
-   - name: Enable automatic security updates
-     copy:
-       dest: /etc/apt/apt.conf.d/20auto-upgrades
-   ```
-- Web application available on port 80
-- Webapp user created using a password from the Vault
-
----
-## Project status
-- **User management** — Yes
-- **Password Vault** — Yes
-- **Security (firewall, fail2ban, ssh)** — Yes
-- **Automatic updates** — Yes
-- **Webserver** — Yes
-- **Provisioning** — Yes, without mistakes
-
-> **Live demo:** [View the project on GitHub Pages](https://miska296.github.io/ansible-web-wm/)
-
----
-## Testing and verification of functionality
-After completing the provisioning, please perform the following checks:
-- **Webserver is running:**
+## 10. Testování a ověření funkčnosti
+Po dokončení provisioning proveďte následující kontroly:
+- **Webserver běží:**
    ```bash
    systemctl status nginx
    ```
-- Open ports:
+- Porty otevřené:
    ```bash
    ss -tuln | grep :80
    ```
-- The firewall does not block communication:
+- Firewall neblokuje komunikaci:
    ```bash
    ufw status
    ```
-- Fail2ban protects the server:
+- Fail2ban chrání server:
    ```bash
    fail2ban-client status
    ```
-- The Ansible playbook ran without errors:
-Watch the output in the terminal – `failed=0` confirms success.
+- Ansible playbook proběhl bez chyb:  
+Sledujte výstup v terminálu – `failed=0` potvrzuje úspěch
 
-![Provisioning output](screenshots/provisioning-output.png)
-*Successful completion of provisioning (`failed=0`)*
+![Výstup provisioning](screenshots/provisioning-output.png)
+*Úspěšné dokončení provisioning (`failed=0`)*
 
-The web page has been successfully deployed and is available at the public address in GitHub Codespace: 
-[glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev](https://glowing-barnacle-q7xw5pvxvv4jhx6jg-80.app.github.dev/)
+Webová stránka byla úspěšně nasazena a je dostupná na veřejné adrese v GitHub Codespace:  
+[fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev](https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev/)
 
-> **Warning:** The public URL works only after the successful provisioning and publication of port 80 in the Codespace.
+> **Upozornění:** Veřejná URL funguje až po úspěšném provisioning a zveřejnění portu 80 v Codespace.
 
-![Website preview](screenshots/web-preview.png)
-*The displayed page after deploying NGINX*
-
-> If the page displays “Hello from GitHub!”, the deployment was successful.
+![Náhled webové stránky](screenshots/web-preview.png)
+*Zobrazená stránka po nasazení NGINX*
 
 ---
-## Video presentation of the project
-It shows the complete run of the script `provision.sh`, deploying the web server using Ansible and verifying its functionality.
+## 11. Řešení problémů
+Tato sekce obsahuje nejčastější chyby, které mohou nastat při nasazení projektu, a jejich řešení. Doporučuji ji projít, pokud provisioning proběhl bez chyb, ale výsledek není podle očekávání.
 
-[![Project presentation ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
-
----
-## Related project
-This project is based on the original repository [static-web-test](https://github.com/Miska296/static-web-test), where a static web application was created using the Replit platform. The project `ansible-web-wm` has been supplemented with automation, security features, and extensive testing.
-
----
-## Troubleshooting
-### 1. No port has opened
-If ports 22 (SSH) or 80 (HTTP) are not open after provisioning, please check the following:
+### 1. Žádný port nebyl otevřen
+Pokud po provisioning nejsou otevřené porty 22 (SSH) nebo 80 (HTTP), zkontrolujte následující:
 1. **Firewall (UFW)**  
-   Check the status of the firewall:
+   Ověřte stav firewallu:
    ```bash
    sudo ufw status
    ```
-- If active, allow the necessary ports:
+- Pokud je aktivní, povolte potřebné porty:
    ```bash
    sudo ufw allow 22
    sudo ufw allow 80
    sudo ufw reload
    ```
 
-### 2. Ports are not available in Codespace
-If ports 22 or 80 are not visible in the 'Ports' tab:
-1. Open the **Ports** tab in Codespace
-2. Click on **"Add port"**
-3. Enter `80` and check **'Public'**
-4. After saving, a public URL will be displayed, e.g. `https://username-repo-80.app.github.dev`
-5. Open it in the browser and verify that the page loads
-6. Check that NGINX is listening on all interfaces (`listen 80`, `listen [::]:80`)
+### 2. Porty nejsou dostupné v Codespace
+Pokud nejsou porty 22 nebo 80 viditelné v záložce „Ports“:
+1. Otevřete záložku **Ports** v Codespace
+2. Klikněte na **„Add port“**
+3. Zadejte `80` a zaškrtněte **„Public“**
+4. Po uložení se zobrazí veřejná URL, např.  
+`https://fluffy-space-trout-97xpgj6x6qgqf9qq-80.app.github.dev/`  
+> *Poznámka: URL se generuje automaticky podle názvu Codespace. Váš odkaz bude mít jiný tvar.*
+5. Otevřete ji v prohlížeči a ověřte, že se stránka načte
+6. Ověřte, že NGINX naslouchá na všech rozhraních (`listen 80`, `listen [::]:80`)
 
-### 3. NGINX is running but is not accessible.
-   Check the status of the service:
+### 3. NGINX běží, ale není dostupný
+   Ověřte stav služby:
    ```bash
    systemctl status nginx
    ```
-   Check if it is listening on port 80:
+   Zkontrolujte, zda naslouchá na portu 80:
    ```bash
    ss -tuln | grep :80
    ```
-> Tip: Always verify that the port is marked as 'Public' in Codespace, otherwise the page won't be accessible externally.
 
-### 4. SSH access restricted
-If you have disabled login using a password or root user, make sure you have the SSH key properly set in `sshd_config`.
+### 4. SSH přístup omezený
+Pokud jste zakázali přihlášení pomocí hesla nebo root uživatele, ujistěte se, že máte správně nastavený SSH klíč v `sshd_config`.
 
-### 5. Provisioning has been completed, but the changes have not been applied
-   Try to run the provisioning again:
+### 5. Provisioning proběhl, ale změny se neprojevily
+   Zkuste provisioning spustit znovu:
    ```bash
    ./provision.sh
    ```
 
-### 6. The web is not available from the outside
-If the webpage does not display through a public URL (e.g., in Codespace), check:
-1. **NGINX configuration**
-   - Make sure that in the template `nginx.conf.j2` there is:
+### 6. Web není dostupný zvenčí
+Pokud se webová stránka nezobrazuje přes veřejnou URL (např. v Codespace), zkontrolujte:
+1. **Konfiguraci NGINX**
+   - Ujistěte se, že v šabloně `nginx.conf.j2` je:
      ```nginx
      server_name _;
      listen 80;
      listen [::]:80;
      ```
-   - This ensures that the server listens on all interfaces and is not limited to `localhost`.
-2. **Restart the service**
-   - In an environment without `systemd`, use:
+   - Tím zajistíte, že server naslouchá na všech rozhraních a není omezen na `localhost`.
+2. **Restart služby**
+   - V prostředí bez `systemd` použijte:
      ```bash
      service nginx restart
      ```
-3. **Port publication**
-   - Manually add port 80 in the tab in Codespace „Ports“ and set it as „Public“.
+3. **Zveřejnění portu**
+   - V Codespace ručně přidejte port `80` v záložce „Ports“ a nastavte ho jako „Public“.
 4. **Firewall**
-   - Check that ports 22 and 80 are allowed:
+   - Ověřte, že porty `22` a `80` jsou povolené:
      ```bash
      sudo ufw status
      ```
 
 ---
-## Best Practices
-- Use `DEBIAN_FRONTEND=noninteractive` to suppress interactive prompts when installing packages.
-- Use `ansible-vault` to securely store sensitive information.
-- After each provisioning, check the status of the services (`nginx`, `fail2ban`, `ssh`) and the open ports.
-- Use `server_name _` in the NGINX configuration if you want the server to respond to requests from any domain or IP address. 
-→ `server_name localhost` restricts access to only the local machine, which may block access in environments like Codespaces or when testing from the outside.
-- Add `listen [::]:80;` for IPv6 support, which enhances availability in modern networks.
-- After each configuration change in NGINX, run the provisioning again and check the status of the service.
-- Document the project structure, deployment diagram, and provisioning outputs.
-- Keep the repository structure clean - avoid nested folders.
+## 12. Stav projektu
+- **Správa uživatelů** — Ano
+- **Vault pro hesla** — Ano
+- **Zabezpečení (SSH, firewall, Fail2ban)** — Ano
+- **Automatické aktualizace systému** — Ano
+- **Webserver (NGINX + Git deploy)** — Ano
+- **Validace funkčnosti** — Ano
+- **Provisioning skript** — Ano, bez chyb
+- **Nasazení přes Vagrant** — Ano
+
+> **Živá ukázka:** [Zobrazit projekt na GitHub Pages](https://miska296.github.io/ansible-web-wm/)
 
 ---
-## Future improvements
-- Add automated testing using GitHub Actions
-- Create a dynamic web interface for provisioning
-- Add support for Docker-based deployment
-- Implement logging and monitoring (e.g., Prometheus, Grafana)
-- Translate documentation into more languages
+---
+# Rozšíření a dokumentace
+## 13. Bonusové funkce
+Projekt obsahuje několik pokročilých funkcí, které zvyšují bezpečnost, spolehlivost a přehlednost nasazení:
+
+- Automatické bezpečnostní aktualizace:
+   ```yaml
+   - name: Enable automatic security updates
+     copy:
+       dest: /etc/apt/apt.conf.d/20auto-upgrades
+   ```
+- Webová aplikace dostupná na portu `80`
+- Uživatel `webapp` vytvořen pomocí hesla z Vaultu
+- Ansible Vault: chrání citlivé proměnné (např. hesla)
+- Idempotence: opakované spuštění playbooku nezpůsobí chyby
+- Handlers: restart služeb pouze při změně konfigurace
+- Debug výpisy: pro ladění obsahu `index.html` a odpovědi serveru
 
 ---
-## Author
-The project was developed by Michaela Kučerová  
-**Version:** 1.0  
-**Date:** July 2025  
-**Last updated:** September 2025  
+## 14. Nasazení přes Vagrant
+### 14.1 Alternativní nasazení: Vagrant
+Projekt lze spustit i lokálně pomocí Vagrantu, což umožňuje testovat provisioning v izolovaném prostředí.
+> Soubor `Vagrantfile` je již součástí projektu a připraven k použití.  
+
+⚠️ Vagrant nelze spustit v GitHub Codespace. Pro testování použij lokální počítač s nainstalovaným Vagrantem a VirtualBoxem.
+
+- Požadavky:
+   - Vagrant
+   - VirtualBox nebo jiný poskytovatel VM
+
+- Struktura:  
+V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který definuje virtuální stroj:
+    ```ruby
+    Vagrant.configure("2") do |config|
+        config.vm.box = "ubuntu/jammy64"
+        config.vm.network "private_network", ip: "192.168.56.10"
+        config.vm.provision "shell", path: "./provision.sh"
+    end
+    ```
+
+- Spuštění:
+   1. Inicializuj a spusť VM:
+      ```bash
+      vagrant up
+      ```
+   2. Připoj se k VM:
+      ```bash
+      vagrant ssh
+      ```
+   3. Ověř webový server:
+      ```bash
+      curl http://localhost
+      ```
+      Nebo z hostitelského systému:  
+      ```bash  
+      curl http://192.168.56.10  
+      ```  
+   4. Zastavení VM:  
+      ```bash
+      vagrant halt
+      ```  
+   5. Smazání VM (volitelně):  
+      ```bash
+      vagrant destroy
+      ```
+
+- Poznámka:  
+Vagrant automaticky spouští `provision.sh`, takže není nutné ho spouštět ručně. Výhodou je, že prostředí je čisté a opakovatelné — ideální pro testování idempotence Ansible playbooku.
+
+---
+### 14.2 Další informace o testování nasazení přes Vagrant:
+Testování provisioning procesu proběhlo také v samostatném repozitáři [vagrant-nginx-provisioning](https://github.com/Miska296/vagrant-nginx-provisioning), kde byly provedeny drobné úpravy souborů a kódu pro správné fungování v prostředí Vagrant. Tento repozitář slouží jako izolované testovací prostředí, které umožňuje ověřit funkčnost playbooku bez ovlivnění hlavního projektu `ansible-web-wm`.
+
+Provisioning byl následně ověřen i v GitHub Codespace po instalaci Ansible, čímž byla potvrzena kompatibilita obou prostředí.
+
+---
+## 15. Osvědčené postupy
+Doporučení pro správu projektu, konfiguraci služeb a udržení čisté struktury:
+
+- Používejte `DEBIAN_FRONTEND=noninteractive` pro potlačení interaktivních dotazů při instalaci balíčků.
+- Využívejte `ansible-vault` pro bezpečné uchování citlivých údajů.
+- Po každém provisioning ověřte stav služeb (`nginx`, `fail2ban`, `ssh`) a otevřené porty.
+- Používejte `server_name _` v konfiguraci NGINX, pokud chcete, aby server reagoval na požadavky z libovolné domény nebo IP adresy. → `server_name localhost` omezuje přístup pouze na místní stroj, což může blokovat přístup v prostředích jako Codespaces nebo při testování zvenčí.
+- Přidejte `listen [::]:80;` pro podporu IPv6, což zvyšuje dostupnost v moderních sítích.
+- Po každé změně konfigurace NGINX spusťte provisioning znovu a ověřte stav služby.
+- Dokumentujte strukturu projektu, diagram nasazení a výstupy provisioning.
+- Udržujte čistou strukturu repozitáře — vyhněte se zanořeným složkám.
+
+---
+## 16. Budoucí vylepšení
+- Přidání automatizovaného testování pomocí GitHub Actions
+- Vytvoření dynamického webového rozhraní pro provisioning
+- Přidání podpory pro nasazení na bázi Dockeru
+- Implementování logování a monitorování (např. Prometheus, Grafana)
+- Přeložení dokumentace do dalších jazyků
+> Tato sekce slouží jako roadmapa pro další vývoj projektu.
+
+---
+---
+# Kontext a závěr
+## 17. Související projekt
+Tento projekt vychází z původního repozitáře [static-web-test](https://github.com/Miska296/static-web-test), kde byla vytvořena statická webová aplikace pomocí platformy Replit.
+V projektu `ansible-web-wm` byla doplněna automatizace, bezpečnostní prvky a rozsáhlé testování.
+
+---
+## 18. Video prezentace projektu
+Ukazuje kompletní běh skriptu `provision.sh`, nasazení webového serveru pomocí Ansible a ověření funkčnosti.
+
+[![Prezentace projektu ansible-web-wm](https://img.youtube.com/vi/aNvzjHr_p9I/0.jpg)](https://www.youtube.com/watch?v=aNvzjHr_p9I&t=3s)
+
+---
+## 19. Autor
+Projekt vypracovala [Michaela Kučerová](https://github.com/Miska296)  
+**Verze:** 1.0  
+**Datum:** červenec 2025  
+**Poslední aktualizace:** September 2025  
 **Build:** OK
 
 ---
-## License  
-This project is available under the MIT license. See the file [LICENSE](LICENSE).
+## 20. Licence
+Tento projekt je dostupný pod licencí MIT. Podrobnosti viz soubor [LICENSE](LICENSE).
