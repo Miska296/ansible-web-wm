@@ -315,7 +315,7 @@ Projekt obsahuje několik pokročilých funkcí, které zvyšují bezpečnost, s
 
 ---
 ## 14. Nasazení přes Vagrant
-### Alternativní nasazení: Vagrant
+### 14.1 Alternativní nasazení: Vagrant
 Projekt lze spustit i lokálně pomocí Vagrantu, což umožňuje testovat provisioning v izolovaném prostředí.
 > Soubor `Vagrantfile` je již součástí projektu a připraven k použití.  
 
@@ -363,6 +363,12 @@ V kořenovém adresáři projektu se nachází soubor `Vagrantfile`, který defi
 
 - Poznámka:  
 Vagrant automaticky spouští `provision.sh`, takže není nutné ho spouštět ručně. Výhodou je, že prostředí je čisté a opakovatelné — ideální pro testování idempotence Ansible playbooku.
+
+---
+### 14.2 Další informace o testování nasazení přes Vagrant:
+Testování provisioning procesu proběhlo také v samostatném repozitáři [vagrant-nginx-provisioning](https://github.com/Miska296/vagrant-nginx-provisioning), kde byly provedeny drobné úpravy souborů a kódu pro správné fungování v prostředí Vagrant. Tento repozitář slouží jako izolované testovací prostředí, které umožňuje ověřit funkčnost playbooku bez ovlivnění hlavního projektu `ansible-web-wm`.
+
+Provisioning byl následně ověřen i v GitHub Codespace po instalaci Ansible, čímž byla potvrzena kompatibilita obou prostředí.
 
 ---
 ## 15. Osvědčené postupy
