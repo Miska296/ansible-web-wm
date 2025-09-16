@@ -58,8 +58,9 @@ kořenová složka `ansible-web-wm/`:
 - group_vars/web/vault     *(Hesla a proměnné chráněné Vaultem)*
 
 - provision.sh
+- LICENSE
 - README.md
-
+- README-en.md
 ![Struktura složek](screenshots/project-structure.png)
 *Struktura projektu v Codespace*
 
