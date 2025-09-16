@@ -59,8 +59,9 @@ root component `ansible-web-wm/`:
 - group_vars/web/vault     *(Passwords and variables protected by Vault)*
 
 - provision.sh
+- LICENSE
 - README.md
-
+- README-en.md
 ![Structure of components](screenshots/project-structure.png)
 *Project structure in Codespace*
 
