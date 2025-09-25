@@ -14,7 +14,7 @@ Watch the full provisioning and deployment process:
 
 ---
 ## Documentation
-- [Czech version (README-cz.html)](README-cz.html)
+- [Czech version (README-cz.md)](README-cz.md)
 - [English version (README-en.md)](README-en.md)
 
 ---
