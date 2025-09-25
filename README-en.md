@@ -6,7 +6,7 @@
 ![GitHub Pages](https://img.shields.io/badge/GitHub--Pages-Live-green)
 
 Automated deployment and securing of a web server using Ansible in a GitHub Codespace environment. The project includes configuration of SSH, firewall, system updates, deployment of a static website, and functionality validation.
-> This project is also available in the Czech version: [README-en.md](README-en.md)
+> This project is also available in the Czech version: [README.md](README.md)
 
 ---
 ---
