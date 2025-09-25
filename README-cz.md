@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-  <meta charset="UTF-8">
-  <title>Česká dokumentace</title>
-</head>
-<body>
-  <pre>
-    # Ansible Web Server Deployment
+# Ansible Web Server Deployment
 
 ![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Last Updated](https://img.shields.io/badge/last--updated-September%202025-blue)
@@ -425,6 +417,3 @@ Projekt vypracovala [Michaela Kučerová](https://github.com/Miska296)
 ---
 ## 20. Licence
 Tento projekt je dostupný pod licencí MIT. Podrobnosti viz soubor [LICENSE](LICENSE).
-  </pre>
-</body>
-</html>
