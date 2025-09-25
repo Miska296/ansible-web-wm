@@ -14,7 +14,7 @@ Watch the full provisioning and deployment process:
 
 ---
 ## Documentation
-- [Czech version (README.md)](README.md)
+- [Czech version (README.md)](https://github.com/miska296/ansible-web-wm/blob/main/README.md)
 - [English version (README-en.md)](README-en.md)
 
 ---
