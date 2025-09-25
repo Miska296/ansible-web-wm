@@ -1,4 +1,4 @@
-# Welcome to ansible-web-wm 🌐
+# Welcome to ansible-web-wm
 This project demonstrates automated deployment and security of a web server using **Ansible**.
 
 ---
@@ -14,7 +14,7 @@ Watch the full provisioning and deployment process:
 
 ---
 ## Documentation
-- [Czech version (README.md)](https://github.com/miska296/ansible-web-wm/blob/main/README.md)
+- [Czech version (README-cz.html)](README-cz.html)
 - [English version (README-en.md)](README-en.md)
 
 ---
